@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
-import { IoDocument, IoMoon } from 'react-icons/io5';
+import { IoDocument, IoGlobe, IoLogoEuro, IoMoon } from 'react-icons/io5';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { MobileNav } from './MobileNav';
 import { DesktopNav } from './DesktopNav';
@@ -74,11 +74,11 @@ export default function Header() {
               spacing={{ base: 2, sm: 4 }}
               as={Link}
             >
-              <Icon as={IoDocument} w={{ base: 8 }} h={{ base: 8 }} />
+              <Icon as={IoGlobe} w={{ base: 8 }} h={{ base: 8 }} />
               <Heading
                 as={'h1'}
                 fontSize={'xl'}
-                display={{ base: 'none', md: 'block' }}
+                display={{ base: 'block', md: 'block' }}
               >
                 Minerva Europass
               </Heading>
