@@ -9,7 +9,7 @@
 
 # Minerva Europass Client (WIP)
 
-Minerva Europass (alias IT Europass) allows to generate your own IT Resume. Currently, there is only one resume template.
+Minerva Europass (alias IT Europass) allows to generate your own IT Resume. Currently, there is only one resume template. See also the [server side application](https://github.com/goto-eof/minerva-europass).
 
 ## Technologies
 
