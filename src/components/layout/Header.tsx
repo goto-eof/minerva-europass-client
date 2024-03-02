@@ -16,7 +16,7 @@ import {
 
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { IoDocument, IoGlobe, IoLogoEuro, IoMoon } from 'react-icons/io5';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
+import { ColorModeSwitcher } from '../util/ColorModeSwitcher';
 import { MobileNav } from './MobileNav';
 import { DesktopNav } from './DesktopNav';
 import { useNavigate } from 'react-router';
