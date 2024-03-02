@@ -2,12 +2,13 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
+  Heading,
   Input,
   SimpleGrid,
   VStack,
 } from '@chakra-ui/react';
 import { replaceProfile } from '../store/profile-slice';
-import { useGlobalDispatch } from '../store/hook';
+import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
 import ProfileDTO from '../../dto/resume/ProfileDTO';
 import { useState } from 'react';
 import GenericList from './GenericList';
@@ -15,7 +16,10 @@ import GenericMap from './GenericMap';
 import KeyValueDTO from '../../dto/resume/KeyValueDTO';
 
 export default function Profile({}: {}) {
-  const [formData, setFormData] = useState<ProfileDTO>();
+  const profileData = useGlobalSelector((state) => {
+    return state.profile.profile;
+  });
+  const [formData, setFormData] = useState<ProfileDTO | undefined>(profileData);
 
   const dispatch = useGlobalDispatch();
 
@@ -24,80 +28,114 @@ export default function Profile({}: {}) {
     dispatch(replaceProfile({ ...formData, [e.target.id]: e.target.value }));
   };
 
-  const addNationality = (nationality: string) => {
-    const nationalities = [...(formData?.citizenshipList || []), nationality];
+  const addNationality = (value: string) => {
+    addToList(value, 'citizenshipList');
+  };
+
+  const addToList = (value: string, fieldName: string) => {
+    let values = [value];
+    if (formData && fieldName in formData) {
+      const list: Array<string> = (formData as any)[fieldName];
+      values = [...list, value];
+    }
     setFormData({
       ...formData,
-      citizenshipList: nationalities,
+      [fieldName]: values,
     });
-    dispatch(replaceProfile({ ...formData, citizenshipList: nationalities }));
+    dispatch(replaceProfile({ ...formData, [fieldName]: values }));
+  };
+
+  const addMainSkill = (value: string) => {
+    addToList(value, 'mainSkillList');
+  };
+
+  const addLanguage = (value: string) => {
+    addToList(value, 'languageList');
   };
 
   const addEmail = (keyValue: KeyValueDTO) => {
-    const itemsMap: Map<string, string> =
-      formData?.emailMap || new Map<string, string>();
-    const newMap: Map<string, string> = new Map<string, string>(itemsMap);
-    console.log(newMap);
-    newMap.set(keyValue.key, keyValue.value);
-    console.log('ok');
+    addToMap(keyValue, 'emailMap');
+  };
+
+  const addToMap = (keyValue: KeyValueDTO, fieldName: string) => {
+    let itemsMap: Array<KeyValueDTO> = new Array<KeyValueDTO>();
+    if (formData && fieldName in formData) {
+      console.log(formData);
+      itemsMap = (formData as any)[fieldName];
+    }
+    console.log(itemsMap);
+    const newMap: Array<KeyValueDTO> = [...itemsMap];
+    newMap.push(keyValue);
     setFormData({
       ...formData,
-      emailMap: newMap,
+      [fieldName]: newMap,
     });
-    dispatch(replaceProfile({ ...formData, emailMap: newMap }));
+    dispatch(replaceProfile({ ...formData, [fieldName]: newMap }));
   };
 
   const addPhoneNumber = (keyValue: KeyValueDTO) => {
-    const itemsMap: Map<string, string> =
-      formData?.phoneNumberMap || new Map<string, string>();
-    const newMap: Map<string, string> = new Map<string, string>(itemsMap);
-    console.log(newMap);
-    newMap.set(keyValue.key, keyValue.value);
-    console.log('ok');
-    setFormData({
-      ...formData,
-      phoneNumberMap: newMap,
-    });
-    dispatch(replaceProfile({ ...formData, phoneNumberMap: newMap }));
+    addToMap(keyValue, 'phoneNumberMap');
+  };
+
+  const addUrl = (keyValue: KeyValueDTO) => {
+    addToMap(keyValue, 'urlMap');
   };
 
   const removeNationality = (nationality: string) => {
-    const nationalities = [
-      ...(formData?.citizenshipList || []).filter((nat) => nat !== nationality),
-    ];
+    removeFromList(nationality, 'citizenshipList');
+  };
+
+  const removeFromList = (value: string, fieldName: string) => {
+    let values = [value];
+    if (formData && fieldName in formData) {
+      values = [
+        ...(formData as any)[fieldName].filter((nat: string) => nat !== value),
+      ];
+    }
     setFormData({
       ...formData,
-      citizenshipList: nationalities,
+      [fieldName]: values,
     });
-    dispatch(replaceProfile({ ...formData, citizenshipList: nationalities }));
+    dispatch(replaceProfile({ ...formData, [fieldName]: values }));
+  };
+
+  const removeMainSkill = (value: string) => {
+    removeFromList(value, 'mainSkillList');
+  };
+
+  const removeLanguage = (value: string) => {
+    removeFromList(value, 'languageList');
   };
 
   const removeEmail = (keyValue: KeyValueDTO) => {
-    const itemsMap = new Map<string, string>(
-      formData?.emailMap || new Map<string, string>()
-    );
-    itemsMap.delete(keyValue.key);
+    removeFromMap(keyValue, 'emailMap');
+  };
+
+  const removeFromMap = (keyValue: KeyValueDTO, fieldName: string) => {
+    let itemsMap = new Array<KeyValueDTO>();
+    if (formData && fieldName in formData) {
+      itemsMap = (formData as any)[fieldName].filter(
+        (item: KeyValueDTO) => item.key !== keyValue.key
+      );
+    }
     setFormData({
       ...formData,
-      emailMap: itemsMap,
+      [fieldName]: itemsMap,
     });
-    dispatch(replaceProfile({ ...formData, emailMap: itemsMap }));
+    dispatch(replaceProfile({ ...formData, [fieldName]: itemsMap }));
   };
 
   const removePhoneNumber = (keyValue: KeyValueDTO) => {
-    const itemsMap = new Map<string, string>(
-      formData?.phoneNumberMap || new Map<string, string>()
-    );
-    itemsMap.delete(keyValue.key);
-    setFormData({
-      ...formData,
-      phoneNumberMap: itemsMap,
-    });
-    dispatch(replaceProfile({ ...formData, phoneNumberMap: itemsMap }));
+    removeFromMap(keyValue, 'phoneNumberMap');
+  };
+
+  const removeUrl = (keyValue: KeyValueDTO) => {
+    removeFromMap(keyValue, 'urlMap');
   };
 
   return (
     <VStack textAlign={'left'}>
+      <Heading>Profile</Heading>
       <SimpleGrid
         columns={{ base: 1, sm: 2, md: 2 }}
         spacing={6}
@@ -120,6 +158,19 @@ export default function Profile({}: {}) {
             id="lastName"
           />
           <FormHelperText>Insert your last name</FormHelperText>
+        </FormControl>
+      </SimpleGrid>
+      <SimpleGrid width={'full'}>
+        <FormControl>
+          <FormLabel htmlFor="birthDate">Birth date</FormLabel>
+          <Input
+            onChange={(e) => handleOnChange(e)}
+            name="birthDate"
+            id="birthDate"
+            placeholder="Select Date and Time"
+            size="md"
+            type="date"
+          />
         </FormControl>
       </SimpleGrid>
       <SimpleGrid
@@ -163,6 +214,7 @@ export default function Profile({}: {}) {
         </FormControl>
       </SimpleGrid>
       <GenericList
+        key={'nationalities'}
         title="Nationalities"
         removeItem={removeNationality}
         list={formData?.citizenshipList}
@@ -183,6 +235,31 @@ export default function Profile({}: {}) {
         addItem={addPhoneNumber}
         removeItem={removePhoneNumber}
         map={formData?.phoneNumberMap}
+      />
+
+      <GenericMap
+        key={'urls'}
+        title="URLs"
+        addButtonTitle={'Add URL'}
+        addItem={addUrl}
+        removeItem={removeUrl}
+        map={formData?.urlMap}
+      />
+
+      <GenericList
+        key={'mainSkills'}
+        title="Main Skills"
+        removeItem={removeMainSkill}
+        list={formData?.mainSkillList}
+        addItem={addMainSkill}
+      />
+
+      <GenericList
+        key={'languages'}
+        title="Languages"
+        removeItem={removeLanguage}
+        list={formData?.languageList}
+        addItem={addLanguage}
       />
     </VStack>
   );

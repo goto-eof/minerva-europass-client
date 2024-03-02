@@ -21,7 +21,7 @@ export default function GenericMap({
 }: {
   title: string;
   addButtonTitle: string;
-  map?: Map<string, string>;
+  map?: Array<KeyValueDTO>;
   addItem: (value: KeyValueDTO) => void;
   removeItem: (value: KeyValueDTO) => void;
 }) {
@@ -40,20 +40,16 @@ export default function GenericMap({
     <Box width={'full'}>
       <Heading size={'sm'}>{title}</Heading>
       {map &&
-        Array.from(map.keys())
-          .map((key: string) => {
-            return { key, value: map.get(key)! };
-          })
-          .map((keyValue: KeyValueDTO) => (
-            <ReadOnlyItem
-              key={title + '_' + keyValue.key}
-              removeItem={removeItem}
-              keyValue={keyValue}
-            />
-          ))}
+        map.map((keyValue: KeyValueDTO) => (
+          <ReadOnlyItem
+            key={title + '_' + keyValue.key}
+            removeItem={removeItem}
+            keyValue={keyValue}
+          />
+        ))}
       <SimpleGrid py={5} columns={{ base: 1, md: 3 }} spacing={6}>
         <FormControl>
-          <FormLabel htmlFor="key">Email type</FormLabel>
+          <FormLabel htmlFor="key">Type</FormLabel>
           <Input
             onChange={(e) => updateItem(e)}
             type={'text'}
@@ -62,7 +58,7 @@ export default function GenericMap({
           />
         </FormControl>
         <FormControl>
-          <FormLabel htmlFor="value">Email</FormLabel>
+          <FormLabel htmlFor="value">Value</FormLabel>
           <Input
             onChange={(e) => updateItem(e)}
             type={'text'}
@@ -96,7 +92,7 @@ function ReadOnlyItem({
   return (
     <SimpleGrid spacing={6} columns={{ base: 1, md: 3 }} py={5}>
       <FormControl>
-        <FormLabel htmlFor="key">Email type</FormLabel>
+        <FormLabel htmlFor="key">Type</FormLabel>
         <Input
           value={keyValue.key}
           type={'text'}
@@ -105,7 +101,7 @@ function ReadOnlyItem({
         />
       </FormControl>
       <FormControl>
-        <FormLabel htmlFor="key">Email type</FormLabel>
+        <FormLabel htmlFor="key">Value</FormLabel>
         <Input
           value={keyValue.value}
           type={'text'}

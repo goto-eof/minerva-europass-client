@@ -1,3 +1,5 @@
+import KeyValueDTO from './KeyValueDTO';
+
 export default interface ProfileDTO {
   firstName?: string;
   lastName?: string;
@@ -7,10 +9,10 @@ export default interface ProfileDTO {
   country?: string;
   jobTitle?: string;
   citizenshipList?: Array<string>;
-  emailMap?: Map<string, string>;
-  phoneNumberMap?: Map<string, string>;
+  emailMap?: Array<KeyValueDTO>;
+  phoneNumberMap?: Array<KeyValueDTO>;
   birthDate?: Date;
-  urlMap?: Map<string, string>;
+  urlMap?: Array<KeyValueDTO>;
   mainSkillList?: Array<string>;
   languageList?: Array<string>;
 }
