@@ -80,7 +80,7 @@ function ReadOnlyItem({
         value={value}
         pr="4.5rem"
         type={'text'}
-        backgroundColor={'rgb(240, 240, 240)'}
+        backgroundColor={'blackAlpha.300'}
         readOnly
       />
       <InputRightElement width="4.5rem">

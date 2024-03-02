@@ -96,7 +96,7 @@ function ReadOnlyItem({
         <Input
           value={keyValue.key}
           type={'text'}
-          backgroundColor={'rgb(240, 240, 240)'}
+          backgroundColor={'blackAlpha.300'}
           readOnly
         />
       </FormControl>
@@ -105,7 +105,7 @@ function ReadOnlyItem({
         <Input
           value={keyValue.value}
           type={'text'}
-          backgroundColor={'rgb(240, 240, 240)'}
+          backgroundColor={'blackAlpha.300'}
           readOnly
         />
       </FormControl>

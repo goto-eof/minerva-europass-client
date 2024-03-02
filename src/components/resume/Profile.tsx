@@ -15,7 +15,7 @@ import GenericList from './GenericList';
 import GenericMap from './GenericMap';
 import KeyValueDTO from '../../dto/resume/KeyValueDTO';
 
-export default function Profile({}: {}) {
+export default function Profile() {
   const profileData = useGlobalSelector((state) => {
     return state.profile.profile;
   });
@@ -133,6 +133,22 @@ export default function Profile({}: {}) {
     removeFromMap(keyValue, 'urlMap');
   };
 
+  const dateToString = (date: Date | undefined) => {
+    if (!date) {
+      return '';
+    }
+    const today = new Date(date);
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1;
+    let dd = today.getDate();
+    let dds = dd + '';
+    let mms = mm + '';
+    if (dd < 10) dds = '0' + dd;
+    if (mm < 10) mms = '0' + mm;
+
+    return yyyy + '-' + mms + '-' + dds;
+  };
+
   return (
     <VStack textAlign={'left'}>
       <Heading>Profile</Heading>
@@ -145,6 +161,7 @@ export default function Profile({}: {}) {
           <FormLabel htmlFor="firstName">First name</FormLabel>
           <Input
             onChange={(e) => handleOnChange(e)}
+            value={formData?.firstName}
             name="firstName"
             id="firstName"
           />
@@ -155,6 +172,7 @@ export default function Profile({}: {}) {
           <Input
             onChange={(e) => handleOnChange(e)}
             name="lastName"
+            value={formData?.lastName}
             id="lastName"
           />
           <FormHelperText>Insert your last name</FormHelperText>
@@ -167,6 +185,7 @@ export default function Profile({}: {}) {
             onChange={(e) => handleOnChange(e)}
             name="birthDate"
             id="birthDate"
+            value={dateToString(formData?.birthDate)}
             placeholder="Select Date and Time"
             size="md"
             type="date"
@@ -180,7 +199,12 @@ export default function Profile({}: {}) {
       >
         <FormControl>
           <FormLabel htmlFor="city">City</FormLabel>
-          <Input onChange={(e) => handleOnChange(e)} name="city" id="city" />
+          <Input
+            onChange={(e) => handleOnChange(e)}
+            value={formData?.city}
+            name="city"
+            id="city"
+          />
           <FormHelperText>Insert your city</FormHelperText>
         </FormControl>
         <FormControl>
@@ -188,6 +212,7 @@ export default function Profile({}: {}) {
           <Input
             onChange={(e) => handleOnChange(e)}
             name="county"
+            value={formData?.county}
             id="county"
           />
           <FormHelperText>Insert your county</FormHelperText>
@@ -197,6 +222,7 @@ export default function Profile({}: {}) {
           <Input
             onChange={(e) => handleOnChange(e)}
             name="country"
+            value={formData?.country}
             id="country"
           />
           <FormHelperText>Insert your country</FormHelperText>
@@ -208,6 +234,7 @@ export default function Profile({}: {}) {
           <Input
             onChange={(e) => handleOnChange(e)}
             name="jobTitle"
+            value={formData?.jobTitle}
             id="jobTitle"
           />
           <FormHelperText>Insert your Job title</FormHelperText>
