@@ -15,6 +15,7 @@ Minerva Europass (alias IT Europass) allows to generate your own IT Resume. Curr
 
 - TypeScript
 - React
+- Redux
 - Chakra UI
 
 ## Configuration and application start
