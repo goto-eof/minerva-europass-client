@@ -1,4 +1,4 @@
 export default interface SectionCommonFragmentDTO {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
 }

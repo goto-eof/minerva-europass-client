@@ -1,9 +1,20 @@
-import { Button, Container, Divider } from '@chakra-ui/react';
+import {
+  Button,
+  Container,
+  Divider,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  css,
+} from '@chakra-ui/react';
 import Profile from './Profile';
 import { useGlobalSelector } from '../store/hook';
 import ResumeDTO from '../../dto/resume/ResumeDTO';
 import { useEffect } from 'react';
 import ResumeApiService from '../../service/ResumeApiService';
+import Introduction from './introduction';
 
 export default function Resume() {
   const profileData = useGlobalSelector((state) => {
@@ -33,7 +44,42 @@ export default function Resume() {
   }, [profileData]);
   return (
     <Container>
-      <Profile />
+      <Tabs>
+        <TabList>
+          <Tab>Profile</Tab>
+          <Tab>Introduction</Tab>
+          <Tab>Experience</Tab>
+          <Tab>Education</Tab>
+          <Tab>Skill matrix</Tab>
+          <Tab>Personal projects</Tab>
+          <Tab>Certificates</Tab>
+        </TabList>
+
+        <TabPanels>
+          <TabPanel>
+            <Profile />
+          </TabPanel>
+          <TabPanel>
+            <Introduction />
+          </TabPanel>
+          <TabPanel>
+            <p>three!</p>
+          </TabPanel>
+          <TabPanel>
+            <p>three!</p>
+          </TabPanel>
+          <TabPanel>
+            <p>three!</p>
+          </TabPanel>
+          <TabPanel>
+            <p>three!</p>
+          </TabPanel>
+          <TabPanel>
+            <p>three!</p>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+
       <Divider />
       <Button width={'full'} colorScheme="blue" onClick={generatePDF}>
         Submit
