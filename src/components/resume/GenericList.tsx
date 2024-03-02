@@ -7,39 +7,61 @@ import {
   InputRightElement,
   SimpleGrid,
 } from '@chakra-ui/react';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, FC, ReactNode, useState } from 'react';
 
-export default function GenericList({
-  list,
-  addItem,
-  removeItem,
-  title,
-}: {
+type ReadOnlyGenericList = {
+  readOnly: boolean;
+  title: string;
+  list?: Array<string>;
+};
+
+type WriteOnlyGenericList = {
+  readOnly: boolean;
   title: string;
   list?: Array<string>;
   addItem: (value: string) => void;
   removeItem: (value: string) => void;
-}) {
+};
+
+type GenericListType = ReadOnlyGenericList | WriteOnlyGenericList;
+
+export default function GenericList(props: GenericListType) {
   const [value, setValue] = useState<string>('');
 
   const updateItem = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
 
+  if (props.readOnly) {
+    return (
+      <Box>
+        {props.title}: {props.list && props.list.join(', ')}
+      </Box>
+    );
+  }
+
   const updateItems = (nationality: string) => {
-    addItem(nationality);
+    if ((props as any).addItem) {
+      (props as WriteOnlyGenericList).addItem(nationality);
+    }
     setValue('');
+  };
+
+  const removeElement = (value: string) => {
+    if ((props as any).removeItem) {
+      (props as WriteOnlyGenericList).removeItem(value);
+    }
   };
 
   return (
     <Box width={'full'}>
-      <Heading size={'sm'}>{title}</Heading>
+      <Heading size={'sm'}>{props.title}</Heading>
       <SimpleGrid py={5} columns={{ base: 1, sm: 2, md: 3 }} spacing={6}>
-        {list &&
-          list.map((value: string) => (
+        {props.list &&
+          props.list.map((value: string) => (
             <ReadOnlyItem
-              key={title + '_' + value}
-              removeItem={removeItem}
+              key={props.title + '_' + value}
+              removeItem={removeElement}
               value={value}
             />
           ))}

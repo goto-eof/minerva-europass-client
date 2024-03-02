@@ -14,6 +14,7 @@ import { useState } from 'react';
 import GenericList from './GenericList';
 import GenericMap from './GenericMap';
 import KeyValueDTO from '../../dto/resume/KeyValueDTO';
+import DateUtil from '../../util/DateUtil';
 
 export default function Profile() {
   const profileData = useGlobalSelector((state) => {
@@ -133,22 +134,6 @@ export default function Profile() {
     removeFromMap(keyValue, 'urlMap');
   };
 
-  const dateToString = (date: Date | undefined) => {
-    if (!date) {
-      return '';
-    }
-    const today = new Date(date);
-    const yyyy = today.getFullYear();
-    let mm = today.getMonth() + 1;
-    let dd = today.getDate();
-    let dds = dd + '';
-    let mms = mm + '';
-    if (dd < 10) dds = '0' + dd;
-    if (mm < 10) mms = '0' + mm;
-
-    return yyyy + '-' + mms + '-' + dds;
-  };
-
   return (
     <VStack textAlign={'left'}>
       <Heading>Profile</Heading>
@@ -185,7 +170,7 @@ export default function Profile() {
             onChange={(e) => handleOnChange(e)}
             name="birthDate"
             id="birthDate"
-            value={dateToString(formData?.birthDate)}
+            value={DateUtil.dateToString(formData?.birthDate)}
             placeholder="Select Date and Time"
             size="md"
             type="date"
@@ -241,6 +226,7 @@ export default function Profile() {
         </FormControl>
       </SimpleGrid>
       <GenericList
+        readOnly={false}
         key={'nationalities'}
         title="Nationalities"
         removeItem={removeNationality}
@@ -274,6 +260,7 @@ export default function Profile() {
       />
 
       <GenericList
+        readOnly={false}
         key={'mainSkills'}
         title="Main Skills"
         removeItem={removeMainSkill}
@@ -282,6 +269,7 @@ export default function Profile() {
       />
 
       <GenericList
+        readOnly={false}
         key={'languages'}
         title="Languages"
         removeItem={removeLanguage}

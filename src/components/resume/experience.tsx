@@ -8,36 +8,32 @@ import {
   Textarea,
   VStack,
 } from '@chakra-ui/react';
-import IntroductionDTO from '../../dto/resume/IntroductionDTO';
 import { useState } from 'react';
 import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
-import { replaceIntroduction } from '../store/introdution-slice';
+import ExperienceDTO from '../../dto/resume/ExperienceDTO';
+import { replaceExperience } from '../store/experience-slice';
 
-export default function Introduction() {
+export default function Experience() {
   const data = useGlobalSelector((state) => {
-    return state.introduction.introduction;
+    return state.experience.experience;
   });
   const dispatch = useGlobalDispatch();
-  const [formData, setFormData] = useState<IntroductionDTO | undefined>(data);
+  const [formData, setFormData] = useState<ExperienceDTO | undefined>(data);
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
-    dispatch(
-      replaceIntroduction({ ...formData, [e.target.id]: e.target.value })
-    );
+    dispatch(replaceExperience({ ...formData, [e.target.id]: e.target.value }));
   };
   const handleOnChangeTextArea = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
-    dispatch(
-      replaceIntroduction({ ...formData, [e.target.id]: e.target.value })
-    );
+    dispatch(replaceExperience({ ...formData, [e.target.id]: e.target.value }));
   };
   return (
     <VStack textAlign={'left'}>
-      <Heading>Introduction</Heading>
+      <Heading>Experience</Heading>
       <SimpleGrid
-        columns={{ base: 1, sm: 1, md: 1 }}
+        columns={{ base: 1, sm: 2, md: 2 }}
         spacing={6}
         width={'full'}
       >
@@ -48,29 +44,17 @@ export default function Introduction() {
             value={formData?.title}
             id="title"
           />
-          <FormHelperText>Insert introductions title</FormHelperText>
+          <FormHelperText>Insert experience section title</FormHelperText>
         </FormControl>
         <FormControl>
-          <FormLabel htmlFor="firstName">Content</FormLabel>
+          <FormLabel htmlFor="description">Description</FormLabel>
           <Textarea
-            noOfLines={30}
-            minH={'60vh'}
             width={'full'}
             onChange={(e) => handleOnChangeTextArea(e)}
             value={formData?.description}
             id="description"
           />
-          <FormHelperText>Insert introductions content</FormHelperText>
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="footer">Introduction Footer</FormLabel>
-          <Textarea
-            width={'full'}
-            onChange={(e) => handleOnChangeTextArea(e)}
-            value={formData?.footer}
-            id="description"
-          />
-          <FormHelperText>Insert introduction content</FormHelperText>
+          <FormHelperText>Insert experience description</FormHelperText>
         </FormControl>
       </SimpleGrid>
     </VStack>

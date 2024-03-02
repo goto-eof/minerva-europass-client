@@ -15,12 +15,14 @@ import ResumeDTO from '../../dto/resume/ResumeDTO';
 import { useEffect } from 'react';
 import ResumeApiService from '../../service/ResumeApiService';
 import Introduction from './introduction';
+import Experience from './experience';
 
 export default function Resume() {
   const profileData = useGlobalSelector((state) => {
     const resume: ResumeDTO = {
       profile: state.profile.profile,
       introduction: state.introduction.introduction,
+      experience: state.experience.experience,
     };
     return resume;
   });
@@ -63,7 +65,7 @@ export default function Resume() {
             <Introduction />
           </TabPanel>
           <TabPanel>
-            <p>three!</p>
+            <Experience />
           </TabPanel>
           <TabPanel>
             <p>three!</p>
