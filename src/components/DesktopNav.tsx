@@ -13,7 +13,8 @@ import {
 } from '@chakra-ui/react';
 
 import { ChevronRightIcon } from '@chakra-ui/icons';
-import { NAV_ITEMS, NavItem } from '../dto/NavItem';
+import { NavItem } from '../dto/NavItem';
+import { NAV_ITEMS } from '../util/MainMenu';
 
 export const DesktopNav = (props: BoxProps) => {
   return (

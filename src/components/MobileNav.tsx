@@ -11,7 +11,8 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
-import { NAV_ITEMS, NavItem } from '../dto/NavItem';
+import { NavItem } from '../dto/NavItem';
+import { NAV_ITEMS } from '../util/MainMenu';
 
 interface MobileNavProps {
   isOpen: boolean;
