@@ -6,22 +6,26 @@ import About from './About';
 import Home from './Home';
 import Resume from './resume/Resume';
 import { HashRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { resumeStore } from './store';
 
 export const App = () => {
   return (
     <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
-        <HashRouter>
-          <Header />
-          <Container maxW={'7xl'} marginTop={'64px'} textAlign={'justify'}>
-            <Routes>
-              <Route path="/about" element={<About />} />
-              <Route path="/" element={<Home />} />
-              <Route path="/fill-up-resume" element={<Resume />} />
-            </Routes>
-          </Container>
-        </HashRouter>
-      </Box>
+      <Provider store={resumeStore}>
+        <Box textAlign="center" fontSize="xl">
+          <HashRouter>
+            <Header />
+            <Container maxW={'7xl'} marginTop={'64px'} textAlign={'justify'}>
+              <Routes>
+                <Route path="/about" element={<About />} />
+                <Route path="/" element={<Home />} />
+                <Route path="/fill-up-resume" element={<Resume />} />
+              </Routes>
+            </Container>
+          </HashRouter>
+        </Box>
+      </Provider>
     </ChakraProvider>
   );
 };

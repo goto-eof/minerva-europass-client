@@ -7,6 +7,9 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useContext, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { replaceProfile } from '../profile-slice';
+import { useProfileDispatch } from '../hook';
 
 type ProfileFormData = {
   firstName?: string;
@@ -28,9 +31,12 @@ type ProfileFormData = {
 export default function Profile({}: {}) {
   const [formData, setFormData] = useState<ProfileFormData>();
 
+  const dispatch = useProfileDispatch();
+
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
     // updateState({ profile: { ...formData, [e.target.id]: e.target.value } });
+    // dispatch(replaceProfile({ }));
   };
 
   return (
