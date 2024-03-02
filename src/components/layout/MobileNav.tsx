@@ -11,8 +11,9 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
-import { NavItem } from '../dto/NavItem';
-import { NAV_ITEMS } from '../util/MainMenu';
+import { NavItem } from '../../dto/NavItem';
+import { NAV_ITEMS } from '../../util/MainMenu';
+import { useNavigate } from 'react-router';
 
 interface MobileNavProps {
   isOpen: boolean;
@@ -67,10 +68,11 @@ const MobileNavItem = ({
       onToggle();
     }
   };
-
+  const navigate = useNavigate();
   const goTo = (e: any, href: string) => {
     e.preventDefault();
     parentOnToggle();
+    navigate(href);
   };
 
   return (
@@ -114,11 +116,9 @@ const MobileNavItem = ({
           {navItem.children &&
             navItem.children.map((child) => (
               <Box
-                href={child.href!}
                 onClick={(e) => goTo(e, child.href!)}
                 key={child.label}
                 py={2}
-                as={Link}
               >
                 {child.label}
               </Box>

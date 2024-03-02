@@ -1,7 +1,6 @@
 import {
   Stack,
   Box,
-  BoxProps,
   Popover,
   PopoverTrigger,
   useColorModeValue,
@@ -9,23 +8,22 @@ import {
   Text,
   Flex,
   Icon,
-  Link,
 } from '@chakra-ui/react';
 
 import { ChevronRightIcon } from '@chakra-ui/icons';
-import { NavItem } from '../dto/NavItem';
-import { NAV_ITEMS } from '../util/MainMenu';
+import { NavItem } from '../../dto/NavItem';
+import { NAV_ITEMS } from '../../util/MainMenu';
+import { useNavigate } from 'react-router';
 
-export const DesktopNav = (props: BoxProps) => {
+export const DesktopNav = () => {
   return (
-    <Stack direction="row" spacing={4} {...props}>
+    <Stack direction="row" spacing={4} display={{ base: 'none', md: 'flex' }}>
       {NAV_ITEMS.map((navItem) => (
-        <Box key={navItem.label}>
+        <Box key={navItem.label} cursor={'pointer'}>
           <Popover trigger="hover" placement={'bottom-start'}>
             <PopoverTrigger>
               <Box
                 p={2}
-                href={navItem.href ?? '#'}
                 fontSize={'sm'}
                 fontWeight={500}
                 // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -35,7 +33,6 @@ export const DesktopNav = (props: BoxProps) => {
                   // eslint-disable-next-line react-hooks/rules-of-hooks
                   color: useColorModeValue('gray.800', 'white'),
                 }}
-                as={Link}
               >
                 {navItem.label}
               </Box>
@@ -53,7 +50,7 @@ export const DesktopNav = (props: BoxProps) => {
               >
                 <Stack>
                   {navItem.children.map((child) => (
-                    <DesktopSubNav key={child.label} {...child} />
+                    <DesktopSubNav key={child.label} navItem={child} />
                   ))}
                 </Stack>
               </PopoverContent>
@@ -65,28 +62,31 @@ export const DesktopNav = (props: BoxProps) => {
   );
 };
 
-const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
-  const goToView = (href: string) => {};
+const DesktopSubNav = ({ navItem }: { navItem: NavItem }) => {
+  const navigate = useNavigate();
+  const goToView = (href: string) => {
+    navigate(href);
+  };
   return (
     <Box
-      href={href!}
       role={'group'}
       display={'block'}
+      cursor={'pointer'}
       p={2}
+      onClick={() => goToView(navItem.href!)}
       rounded={'md'}
       _hover={{ bg: useColorModeValue('green.50', 'gray.900') }}
-      as={Link}
     >
       <Stack direction={'row'} align={'center'}>
-        <Box onClick={() => goToView(href!)}>
+        <Box>
           <Text
             transition={'all .3s ease'}
             _groupHover={{ color: 'green.400' }}
             fontWeight={500}
           >
-            {label}
+            {navItem.label}
           </Text>
-          <Text fontSize={'sm'}>{subLabel}</Text>
+          <Text fontSize={'sm'}>{navItem.subLabel}</Text>
         </Box>
         <Flex
           transition={'all .3s ease'}

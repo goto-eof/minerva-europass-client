@@ -19,8 +19,15 @@ import { IoDocument, IoGlobe, IoLogoEuro, IoMoon } from 'react-icons/io5';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { MobileNav } from './MobileNav';
 import { DesktopNav } from './DesktopNav';
+import { useNavigate } from 'react-router';
 export default function Header() {
   const { isOpen: isMobileNavOpen, onToggle } = useDisclosure();
+
+  const navigate = useNavigate();
+
+  const goTo = (href: string) => {
+    navigate(href);
+  };
 
   return (
     <Box as="header">
@@ -68,11 +75,11 @@ export default function Header() {
             justify={{ base: 'start', md: 'start' }}
           >
             <Stack
-              href="/"
+              cursor={'pointer'}
               direction="row"
               alignItems="center"
               spacing={{ base: 2, sm: 4 }}
-              as={Link}
+              onClick={() => goTo('/')}
             >
               <Icon as={IoGlobe} w={{ base: 8 }} h={{ base: 8 }} />
               <Heading
@@ -92,7 +99,7 @@ export default function Header() {
             flex={{ base: 1, md: 'auto' }}
             justify={'flex-end'}
           >
-            <DesktopNav display={{ base: 'none', md: 'flex' }} />
+            <DesktopNav />
             <ColorModeSwitcher />
           </Stack>
         </Container>

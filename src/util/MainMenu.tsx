@@ -1,8 +1,8 @@
 export const NAV_ITEMS = [
   {
     label: 'Europass',
-    href: 'home',
-    children: [{ label: 'Generate IT Europass', href: 'generate' }],
+    href: '/',
+    children: [{ label: 'Generate IT Europass', href: 'fill-up-resume' }],
   },
   {
     label: 'Info',
