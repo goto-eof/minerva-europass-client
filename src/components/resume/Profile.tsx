@@ -1,78 +1,36 @@
 import {
-  Box,
   FormControl,
   FormHelperText,
   FormLabel,
-  HStack,
   Input,
   SimpleGrid,
   VStack,
-  useStatStyles,
 } from '@chakra-ui/react';
-import ProfileDTO from '../../dto/resume/ProfileDTO';
-import { useEffect, useRef, useState } from 'react';
-import ErrorDTO from '../../dto/resume/ErrorDTO';
+import { useContext, useState } from 'react';
 
-export default function Profile({
-  pullData,
-  pinger,
-}: {
-  pinger: boolean;
-  pullData: (profile: ProfileDTO) => void;
-}) {
-  const [errorMessages, setErrorMessages] = useState<Array<ErrorDTO>>([]);
+type ProfileFormData = {
+  firstName?: string;
+  lastName?: string;
+  image?: string;
+  city?: string;
+  county?: string;
+  country?: string;
+  jobTitle?: string;
+  citizenshipList?: Array<string>;
+  emailMap?: Map<string, string>;
+  phoneNumberMap?: Map<string, string>;
+  birthDate?: Date;
+  urlMap?: Map<string, string>;
+  mainSkillList?: Array<string>;
+  languageList?: Array<string>;
+};
 
-  const firstNameRef = useRef<HTMLInputElement>(null);
-  const firstNameErrRef = useRef<HTMLDivElement>(null);
-  const lastNameErrRef = useRef<HTMLDivElement>(null);
-  const lastNameRef = useRef<HTMLInputElement>(null);
+export default function Profile({}: {}) {
+  const [formData, setFormData] = useState<ProfileFormData>();
 
-  useEffect(() => {
-    if (!isInputValid()) {
-      return;
-    }
-    const data: ProfileDTO = retrieveDataAndBuildObject();
-    pullData(data);
-  }, [pinger]);
-
-  const isInputValid = () => {
-    let errors: Array<ErrorDTO> = [];
-    errors = errors.concat(validateField(firstNameRef, firstNameErrRef));
-    errors = errors.concat(validateField(lastNameRef, lastNameErrRef));
-    setErrorMessages(errors);
-    return errors.length == 0;
-  };
-
-  const validateField = (
-    ref: React.RefObject<HTMLInputElement>,
-    errRef: React.RefObject<HTMLDivElement>
-  ): Array<ErrorDTO> => {
-    const errMessages: Array<ErrorDTO> = [];
-    if (!ref.current!.value) {
-      ref.current!.style.backgroundColor = '#FFF3F3';
-      const errMessage =
-        'Invalid value. The field should be not isEmptyBindingElement.';
-      errMessages.push({
-        key: ref.current!.id,
-        value: errMessage,
-      });
-      errRef.current!.textContent = errMessage;
-      errRef.current!.style.color = 'red';
-
-      return errMessages;
-    }
-    ref.current!.style.backgroundColor = '';
-    errRef.current!.textContent = '';
-    errRef.current!.style.color = '';
-
-    return [];
-  };
-
-  const retrieveDataAndBuildObject = (): ProfileDTO => {
-    return {
-      firstName: firstNameRef.current!.value,
-      lastName: lastNameRef.current!.value,
-    };
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+    // updateState({ profile: { ...formData, [e.target.id]: e.target.value } });
   };
 
   return (
@@ -80,17 +38,13 @@ export default function Profile({
       <SimpleGrid columns={{ base: 2 }} spacing={6} width={'full'}>
         <FormControl>
           <FormLabel htmlFor="firstName">First name</FormLabel>
-          <Input id="firstName" ref={firstNameRef} />
-          <FormHelperText ref={firstNameErrRef}>
-            Insert your first name
-          </FormHelperText>
+          <Input onChange={(e) => handleOnChange(e)} id="firstName" />
+          <FormHelperText>Insert your first name</FormHelperText>
         </FormControl>
         <FormControl>
           <FormLabel htmlFor="lastName">Last name</FormLabel>
-          <Input id="lastName" ref={lastNameRef} />
-          <FormHelperText ref={lastNameErrRef}>
-            Insert your last name
-          </FormHelperText>
+          <Input onChange={(e) => handleOnChange(e)} id="lastName" />
+          <FormHelperText>Insert your last name</FormHelperText>
         </FormControl>
       </SimpleGrid>
     </VStack>
