@@ -1,8 +1,5 @@
 {
     "workbench.colorCustomizations": {
-        "editorUnnecessaryCode.border": "#d55151",
-        "activityBar.background": "#40262A",
-        "titleBar.activeBackground": "#5A353B",
-        "titleBar.activeForeground": "#FCF9FA"
+        "editorUnnecessaryCode.border": "#d55151"
     }
 }

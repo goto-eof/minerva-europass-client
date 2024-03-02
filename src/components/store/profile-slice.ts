@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import ProfileDTO from '../dto/resume/ProfileDTO';
+import ProfileDTO from '../../dto/resume/ProfileDTO';
 
 type ProfileState = {
   profile?: ProfileDTO;

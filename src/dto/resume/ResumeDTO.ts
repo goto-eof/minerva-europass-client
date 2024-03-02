@@ -9,14 +9,14 @@ import ProfileDTO from './ProfileDTO';
 import SkillsMatrixDTO from './SkillsMatrixDTO';
 
 export default interface ResumeDTO {
-  profile: ProfileDTO;
-  introduction: IntroductionDTO;
-  experience: ExperienceDTO;
-  personalProjects: PersonalProjectsDTO;
-  education: EducationDTO;
-  otherSkills: OtherSkillsDTO;
-  skillsMatrix: SkillsMatrixDTO;
-  other: OtherDTO;
-  certificates: CertificatesDTO;
-  localeName: string;
+  profile?: ProfileDTO;
+  introduction?: IntroductionDTO;
+  experience?: ExperienceDTO;
+  personalProjects?: PersonalProjectsDTO;
+  education?: EducationDTO;
+  otherSkills?: OtherSkillsDTO;
+  skillsMatrix?: SkillsMatrixDTO;
+  other?: OtherDTO;
+  certificates?: CertificatesDTO;
+  localeName?: string;
 }

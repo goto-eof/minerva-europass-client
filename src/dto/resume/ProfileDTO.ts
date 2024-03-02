@@ -1,6 +1,6 @@
 export default interface ProfileDTO {
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
   image?: string;
   city?: string;
   county?: string;

@@ -7,7 +7,7 @@ import Home from './Home';
 import Resume from './resume/Resume';
 import { HashRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { resumeStore } from './store';
+import { resumeStore } from './store/store';
 
 export const App = () => {
   return (

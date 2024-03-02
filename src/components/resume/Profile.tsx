@@ -8,8 +8,8 @@ import {
 } from '@chakra-ui/react';
 import { useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { replaceProfile } from '../profile-slice';
-import { useProfileDispatch } from '../hook';
+import { replaceProfile } from '../store/profile-slice';
+import { useGlobalDispatch } from '../store/hook';
 
 type ProfileFormData = {
   firstName?: string;
@@ -31,12 +31,11 @@ type ProfileFormData = {
 export default function Profile({}: {}) {
   const [formData, setFormData] = useState<ProfileFormData>();
 
-  const dispatch = useProfileDispatch();
+  const dispatch = useGlobalDispatch();
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
-    // updateState({ profile: { ...formData, [e.target.id]: e.target.value } });
-    // dispatch(replaceProfile({ }));
+    dispatch(replaceProfile({ ...formData, [e.target.id]: e.target.value }));
   };
 
   return (
