@@ -20,6 +20,7 @@ import EducationItem from './EducationItem';
 import Education from './education';
 import OtherSkills from './otherSkills';
 import Other from './other';
+import SkillMatrix from './skillMatrix';
 
 export default function Resume() {
   const profileData = useGlobalSelector((state) => {
@@ -31,6 +32,7 @@ export default function Resume() {
       otherSkills: state.otherSkills.otherSkills,
       other: state.other.other,
       certificates: state.certificates.certificates,
+      skillsMatrix: state.skillMatrix.skillMatrix,
     };
     return resume;
   });
@@ -87,7 +89,7 @@ export default function Resume() {
             <Other />
           </TabPanel>
           <TabPanel>
-            <p>three!</p>
+            <SkillMatrix />
           </TabPanel>
         </TabPanels>
       </Tabs>

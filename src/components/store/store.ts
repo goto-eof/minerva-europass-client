@@ -6,6 +6,7 @@ import { educationSlice } from './education-slice';
 import { otherSkillsSlice } from './odtheSkills-slice';
 import { otherSlice } from './other-slice';
 import { certificatesSlice } from './certificates-slice';
+import { skillMatrixSlice } from './skillMatrix-slice';
 
 export const resumeStore = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const resumeStore = configureStore({
     education: educationSlice.reducer,
     otherSkills: otherSkillsSlice.reducer,
     other: otherSlice.reducer,
+    skillMatrix: skillMatrixSlice.reducer,
     certificates: certificatesSlice.reducer,
   },
 });
