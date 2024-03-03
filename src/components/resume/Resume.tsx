@@ -23,6 +23,10 @@ export default function Resume() {
       profile: state.profile.profile,
       introduction: state.introduction.introduction,
       experience: state.experience.experience,
+      education: state.education.education,
+      otherSkills: state.otherSkills.otherSkills,
+      other: state.other.other,
+      certificates: state.certificates.certificates,
     };
     return resume;
   });
@@ -84,7 +88,7 @@ export default function Resume() {
 
       <Divider />
       <Button width={'full'} colorScheme="blue" onClick={generatePDF}>
-        Submit
+        Generate PDF
       </Button>
     </Container>
   );
