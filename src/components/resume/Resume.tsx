@@ -19,6 +19,7 @@ import Experience from './experience';
 import EducationItem from './EducationItem';
 import Education from './education';
 import OtherSkills from './otherSkills';
+import Other from './other';
 
 export default function Resume() {
   const profileData = useGlobalSelector((state) => {
@@ -60,6 +61,7 @@ export default function Resume() {
           <Tab>Experience</Tab>
           <Tab>Education</Tab>
           <Tab>Other skills</Tab>
+          <Tab>Other</Tab>
           <Tab>Skill matrix</Tab>
           <Tab>Personal projects</Tab>
           <Tab>Certificates</Tab>
@@ -82,7 +84,7 @@ export default function Resume() {
             <OtherSkills />
           </TabPanel>
           <TabPanel>
-            <p>three!</p>
+            <Other />
           </TabPanel>
           <TabPanel>
             <p>three!</p>
