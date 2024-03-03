@@ -11,7 +11,7 @@ export default interface ProfileDTO {
   citizenshipList?: Array<string>;
   emailMap?: Array<KeyValueDTO>;
   phoneNumberMap?: Array<KeyValueDTO>;
-  birthDate?: Date;
+  birthDate?: string;
   urlMap?: Array<KeyValueDTO>;
   mainSkillList?: Array<string>;
   languageList?: Array<string>;

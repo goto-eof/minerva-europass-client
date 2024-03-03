@@ -5,9 +5,10 @@ import UrlDTO from './UrlDTO';
 export default interface ExperienceItemDTO
   extends ExperienceItemFragmentCommonDTO,
     TechnologiesItemFragmentDTO {
+  _id?: number;
   jobTitle: string;
-  url: string;
-  urlList: Array<UrlDTO>;
+  url?: string;
+  urlList?: Array<UrlDTO>;
   mainActivities: string;
   customer: string;
   sector: string;

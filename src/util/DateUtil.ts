@@ -1,9 +1,17 @@
 export default class DateUtil {
-  static dateToString = (date: Date | undefined) => {
+  static dateToString = (date: Date | string | undefined) => {
     if (!date) {
       return '';
     }
-    const today = new Date(date);
+    let today = null; //new Date(date);
+    console.log('TYPEOF', typeof date);
+    if (typeof date === 'string') {
+      today = this.stringToDate(date);
+      console.log('OOOOK');
+    } else {
+      today = new Date(date);
+    }
+
     const yyyy = today.getFullYear();
     let mm = today.getMonth() + 1;
     let dd = today.getDate();
@@ -14,4 +22,20 @@ export default class DateUtil {
 
     return yyyy + '-' + mms + '-' + dds;
   };
+
+  static stringToDate(date: string) {
+    console.log('DATE', date);
+    var parts = date.split('-');
+    return new Date(+parts[0], +parts[1] - 1, +parts[2]);
+  }
+
+  static dateFormat(date: string) {
+    return date;
+    console.log('START', date);
+    console.log('DATE', date);
+    var parts = date.split('-');
+    const newDate = parts[2] + '-' + (+parts[0] - 1) + '-' + parts[1];
+    console.log('END', newDate);
+    return newDate;
+  }
 }

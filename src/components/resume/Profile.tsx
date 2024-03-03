@@ -29,6 +29,19 @@ export default function Profile() {
     dispatch(replaceProfile({ ...formData, [e.target.id]: e.target.value }));
   };
 
+  const handleOnChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+    dispatch(
+      replaceProfile({
+        ...formData,
+        [e.target.id]: e.target.value,
+      })
+    );
+  };
+
   const addNationality = (value: string) => {
     addToList(value, 'citizenshipList');
   };
@@ -167,10 +180,10 @@ export default function Profile() {
         <FormControl>
           <FormLabel htmlFor="birthDate">Birth date</FormLabel>
           <Input
-            onChange={(e) => handleOnChange(e)}
+            onChange={(e) => handleOnChangeDate(e)}
             name="birthDate"
             id="birthDate"
-            value={DateUtil.dateToString(formData?.birthDate)}
+            value={formData?.birthDate}
             placeholder="Select Date and Time"
             size="md"
             type="date"

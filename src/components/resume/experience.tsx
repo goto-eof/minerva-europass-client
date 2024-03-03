@@ -1,4 +1,5 @@
 import {
+  Divider,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -12,6 +13,8 @@ import { useState } from 'react';
 import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
 import ExperienceDTO from '../../dto/resume/ExperienceDTO';
 import { replaceExperience } from '../store/experience-slice';
+import ExperienceItemDTO from '../../dto/resume/ExperienceItemDTO';
+import ExperienceItem from './ExperienceItem';
 
 export default function Experience() {
   const data = useGlobalSelector((state) => {
@@ -29,6 +32,50 @@ export default function Experience() {
     setFormData({ ...formData, [e.target.id]: e.target.value });
     dispatch(replaceExperience({ ...formData, [e.target.id]: e.target.value }));
   };
+
+  const handleAddExperience = (experience: ExperienceItemDTO) => {
+    experience._id = formData?.experienceList?.length;
+    const newExperience = {
+      ...formData,
+      experienceList: [...(formData?.experienceList || []), experience],
+    };
+    setFormData(newExperience);
+    dispatch(replaceExperience(newExperience));
+  };
+
+  const handleRemoveExperience = (experience: ExperienceItemDTO) => {
+    const newExperience = {
+      ...formData,
+      experienceList: (formData?.experienceList || []).filter(
+        (exp) => exp._id !== experience._id
+      ),
+    };
+    setFormData(newExperience);
+    dispatch(replaceExperience(newExperience));
+  };
+
+  const equals = (exp1: ExperienceItemDTO, exp2: ExperienceItemDTO) => {
+    return (
+      exp1.dateFrom === exp2.dateFrom &&
+      exp1.dateTo === exp2.dateTo &&
+      exp1.description === exp2.description
+    );
+  };
+
+  const updateExperience = (experience: ExperienceItemDTO) => {
+    const newExperience = {
+      ...formData,
+      experienceList: (formData?.experienceList || []).map((exp) => {
+        if (exp._id === experience._id) {
+          return experience;
+        }
+        return exp;
+      }),
+    };
+    setFormData(newExperience);
+    dispatch(replaceExperience(newExperience));
+  };
+
   return (
     <VStack textAlign={'left'}>
       <Heading>Experience</Heading>
@@ -57,6 +104,18 @@ export default function Experience() {
           <FormHelperText>Insert experience description</FormHelperText>
         </FormControl>
       </SimpleGrid>
+      <Divider />
+      {formData?.experienceList &&
+        formData.experienceList.map((item) => (
+          <ExperienceItem
+            removeExperience={handleRemoveExperience}
+            readOnly={true}
+            exp={item}
+            updateExperience={updateExperience}
+          />
+        ))}
+      <Divider />
+      <ExperienceItem readOnly={false} addExperience={handleAddExperience} />
     </VStack>
   );
 }
