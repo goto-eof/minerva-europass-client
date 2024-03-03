@@ -16,6 +16,9 @@ import { useEffect } from 'react';
 import ResumeApiService from '../../service/ResumeApiService';
 import Introduction from './introduction';
 import Experience from './experience';
+import EducationItem from './EducationItem';
+import Education from './education';
+import OtherSkills from './otherSkills';
 
 export default function Resume() {
   const profileData = useGlobalSelector((state) => {
@@ -56,6 +59,7 @@ export default function Resume() {
           <Tab>Introduction</Tab>
           <Tab>Experience</Tab>
           <Tab>Education</Tab>
+          <Tab>Other skills</Tab>
           <Tab>Skill matrix</Tab>
           <Tab>Personal projects</Tab>
           <Tab>Certificates</Tab>
@@ -72,10 +76,10 @@ export default function Resume() {
             <Experience />
           </TabPanel>
           <TabPanel>
-            <p>three!</p>
+            <Education />
           </TabPanel>
           <TabPanel>
-            <p>three!</p>
+            <OtherSkills />
           </TabPanel>
           <TabPanel>
             <p>three!</p>
