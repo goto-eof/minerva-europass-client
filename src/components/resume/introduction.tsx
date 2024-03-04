@@ -9,7 +9,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import IntroductionDTO from '../../dto/resume/IntroductionDTO';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
 import { replaceIntroduction } from '../store/introdution-slice';
 
@@ -19,6 +19,11 @@ export default function Introduction() {
   });
   const dispatch = useGlobalDispatch();
   const [formData, setFormData] = useState<IntroductionDTO | undefined>(data);
+
+  useEffect(() => {
+    setFormData(data);
+  }, [data]);
+
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
     dispatch(

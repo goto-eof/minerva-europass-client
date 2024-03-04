@@ -10,17 +10,20 @@ import {
 import { replaceProfile } from '../store/profile-slice';
 import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
 import ProfileDTO from '../../dto/resume/ProfileDTO';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import GenericList from './GenericList';
 import GenericMap from './GenericMap';
 import KeyValueDTO from '../../dto/resume/KeyValueDTO';
-import DateUtil from '../../util/DateUtil';
 
 export default function Profile() {
   const profileData = useGlobalSelector((state) => {
     return state.profile.profile;
   });
   const [formData, setFormData] = useState<ProfileDTO | undefined>(profileData);
+
+  useEffect(() => {
+    setFormData(profileData);
+  }, [profileData]);
 
   const dispatch = useGlobalDispatch();
 

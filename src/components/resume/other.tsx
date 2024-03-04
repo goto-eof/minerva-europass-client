@@ -9,7 +9,7 @@ import {
   Textarea,
   VStack,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
 import OtherDTO from '../../dto/resume/OtherDTO';
 import { replaceOther } from '../store/other-slice';
@@ -22,6 +22,10 @@ export default function Other() {
   });
   const dispatch = useGlobalDispatch();
   const [formData, setFormData] = useState<OtherDTO | undefined>(data);
+
+  useEffect(() => {
+    setFormData(data);
+  }, [data]);
 
   const addToMap = (keyValue: KeyValueDTO, fieldName: string) => {
     let itemsMap: Array<KeyValueDTO> = new Array<KeyValueDTO>();

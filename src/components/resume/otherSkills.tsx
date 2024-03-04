@@ -9,7 +9,7 @@ import {
   Textarea,
   VStack,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
 import OtherSkillsDTO from '../../dto/resume/OtherSkillsDTO';
 import { replaceOtherSkills } from '../store/odtheSkills-slice';
@@ -21,6 +21,10 @@ export default function OtherSkills() {
   });
   const dispatch = useGlobalDispatch();
   const [formData, setFormData] = useState<OtherSkillsDTO | undefined>(data);
+
+  useEffect(() => {
+    setFormData(data);
+  }, [data]);
 
   const removeFromList = (value: string, fieldName: string) => {
     let values = [value];

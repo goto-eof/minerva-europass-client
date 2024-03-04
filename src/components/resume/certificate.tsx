@@ -9,7 +9,7 @@ import {
   Textarea,
   VStack,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
 import CertificateItemDTO from '../../dto/resume/CertificateItemDTO';
 import CertificatesDTO from '../../dto/resume/CertificatesDTO';
@@ -22,6 +22,11 @@ export default function Certificate() {
   });
   const dispatch = useGlobalDispatch();
   const [formData, setFormData] = useState<CertificatesDTO | undefined>(data);
+
+  useEffect(() => {
+    setFormData(data);
+  }, [data]);
+
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
     dispatch(

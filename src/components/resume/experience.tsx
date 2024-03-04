@@ -9,7 +9,7 @@ import {
   Textarea,
   VStack,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
 import ExperienceDTO from '../../dto/resume/ExperienceDTO';
 import { replaceExperience } from '../store/experience-slice';
@@ -22,6 +22,11 @@ export default function Experience() {
   });
   const dispatch = useGlobalDispatch();
   const [formData, setFormData] = useState<ExperienceDTO | undefined>(data);
+
+  useEffect(() => {
+    setFormData(data);
+  }, [data]);
+
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
     dispatch(replaceExperience({ ...formData, [e.target.id]: e.target.value }));

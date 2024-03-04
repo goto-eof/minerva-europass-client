@@ -10,7 +10,7 @@ import {
   css,
 } from '@chakra-ui/react';
 import Profile from './Profile';
-import { useGlobalSelector } from '../store/hook';
+import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
 import ResumeDTO from '../../dto/resume/ResumeDTO';
 import { useEffect } from 'react';
 import ResumeApiService from '../../service/ResumeApiService';
@@ -23,9 +23,18 @@ import Other from './other';
 import SkillMatrix from './skillMatrix';
 import PersonalProjects from './personalProjects';
 import Certificate from './certificate';
+import { replaceProfile } from '../store/profile-slice';
+import { replaceIntroduction } from '../store/introdution-slice';
+import { replaceExperience } from '../store/experience-slice';
+import { replaceEducation } from '../store/education-slice';
+import { replaceOther } from '../store/other-slice';
+import { replaceOtherSkills } from '../store/odtheSkills-slice';
+import { replaceCertificates } from '../store/certificates-slice';
+import { replaceSkillMatrix } from '../store/skillMatrix-slice';
+import { replacePersonalProjects } from '../store/personalProjects-slice';
 
 export default function Resume() {
-  const profileData = useGlobalSelector((state) => {
+  const profileData: ResumeDTO = useGlobalSelector((state) => {
     const resume: ResumeDTO = {
       profile: state.profile.profile,
       introduction: state.introduction.introduction,
@@ -41,9 +50,44 @@ export default function Resume() {
   });
 
   const generatePDF = async () => {
+    const stringify = JSON.stringify(profileData);
+    localStorage.setItem('data', stringify);
     const byte = await new ResumeApiService().post(profileData, 'it_IT');
     saveByteArray('Resume.pdf', byte);
   };
+
+  const dispatch = useGlobalDispatch();
+  useEffect(() => {
+    const data = localStorage.getItem('data');
+    const resume: ResumeDTO = JSON.parse(data || '{}');
+    if (resume.profile) {
+      dispatch(replaceProfile(resume.profile));
+    }
+    if (resume.introduction) {
+      dispatch(replaceIntroduction(resume.introduction));
+    }
+    if (resume.experience) {
+      dispatch(replaceExperience(resume.experience));
+    }
+    if (resume.education) {
+      dispatch(replaceEducation(resume.education));
+    }
+    if (resume.otherSkills) {
+      dispatch(replaceOtherSkills(resume.otherSkills));
+    }
+    if (resume.other) {
+      dispatch(replaceOther(resume.other));
+    }
+    if (resume.certificates) {
+      dispatch(replaceCertificates(resume.certificates));
+    }
+    if (resume.skillsMatrix) {
+      dispatch(replaceSkillMatrix(resume.skillsMatrix));
+    }
+    if (resume.personalProjects) {
+      dispatch(replacePersonalProjects(resume.personalProjects));
+    }
+  }, []);
 
   function saveByteArray(reportName: string, byte: ArrayBuffer) {
     var blob = new Blob([byte], { type: 'application/pdf' });

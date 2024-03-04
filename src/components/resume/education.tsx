@@ -9,7 +9,7 @@ import {
   Textarea,
   VStack,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
 import EducationDTO from '../../dto/resume/EducationDTO';
 import EducationItemDTO from '../../dto/resume/EducationItemDTO';
@@ -22,6 +22,11 @@ export default function Education() {
   });
   const dispatch = useGlobalDispatch();
   const [formData, setFormData] = useState<EducationDTO | undefined>(data);
+
+  useEffect(() => {
+    setFormData(data);
+  }, [data]);
+
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
     dispatch(replaceEducation({ ...formData, [e.target.id]: e.target.value }));

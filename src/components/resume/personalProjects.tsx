@@ -9,14 +9,13 @@ import {
   Textarea,
   VStack,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
 import { replaceExperience } from '../store/experience-slice';
 import ExperienceItemDTO from '../../dto/resume/ExperienceItemDTO';
 import PersonalProjectsDTO from '../../dto/resume/PersonalProjectDTO';
 import { replacePersonalProjects } from '../store/personalProjects-slice';
 import PersonalProjectItem from './PersonalProjectItem';
-import DateUtil from '../../util/DateUtil';
 
 export default function PersonalProjects() {
   const data = useGlobalSelector((state) => {
@@ -26,6 +25,11 @@ export default function PersonalProjects() {
   const [formData, setFormData] = useState<PersonalProjectsDTO | undefined>(
     data
   );
+
+  useEffect(() => {
+    setFormData(data);
+  }, [data]);
+
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
     dispatch(
