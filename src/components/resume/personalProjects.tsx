@@ -11,29 +11,37 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
-import ExperienceDTO from '../../dto/resume/ExperienceDTO';
 import { replaceExperience } from '../store/experience-slice';
 import ExperienceItemDTO from '../../dto/resume/ExperienceItemDTO';
-import ExperienceItem from './ExperienceItem';
+import PersonalProjectsDTO from '../../dto/resume/PersonalProjectDTO';
+import { replacePersonalProjects } from '../store/personalProjects-slice';
+import PersonalProjectItem from './PersonalProjectItem';
+import DateUtil from '../../util/DateUtil';
 
-export default function Experience() {
+export default function PersonalProjects() {
   const data = useGlobalSelector((state) => {
-    return state.experience.experience;
+    return state.personalProjects.personalProjects;
   });
   const dispatch = useGlobalDispatch();
-  const [formData, setFormData] = useState<ExperienceDTO | undefined>(data);
+  const [formData, setFormData] = useState<PersonalProjectsDTO | undefined>(
+    data
+  );
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
-    dispatch(replaceExperience({ ...formData, [e.target.id]: e.target.value }));
+    dispatch(
+      replacePersonalProjects({ ...formData, [e.target.id]: e.target.value })
+    );
   };
   const handleOnChangeTextArea = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
-    dispatch(replaceExperience({ ...formData, [e.target.id]: e.target.value }));
+    dispatch(
+      replacePersonalProjects({ ...formData, [e.target.id]: e.target.value })
+    );
   };
 
-  const handleAddExperience = (experience: ExperienceItemDTO) => {
+  const handleAddItem = (experience: ExperienceItemDTO) => {
     const id = formData?.experienceList?.length || 0;
     const newExperience = { ...experience, _id: id };
     console.log(newExperience);
@@ -42,26 +50,19 @@ export default function Experience() {
       experienceList: [...(formData?.experienceList || []), newExperience],
     };
     setFormData(newItem);
-    dispatch(replaceExperience(newItem));
+    dispatch(replacePersonalProjects(newItem));
   };
 
   const handleRemoveExperience = (experience: ExperienceItemDTO) => {
-    const newExperience = {
+    console.log(formData?.experienceList);
+    const newItem = {
       ...formData,
       experienceList: (formData?.experienceList || []).filter(
         (exp) => exp._id !== experience._id
       ),
     };
-    setFormData(newExperience);
-    dispatch(replaceExperience(newExperience));
-  };
-
-  const equals = (exp1: ExperienceItemDTO, exp2: ExperienceItemDTO) => {
-    return (
-      exp1.dateFrom === exp2.dateFrom &&
-      exp1.dateTo === exp2.dateTo &&
-      exp1.description === exp2.description
-    );
+    setFormData(newItem);
+    dispatch(replacePersonalProjects(newItem));
   };
 
   const updateExperience = (experience: ExperienceItemDTO) => {
@@ -80,7 +81,7 @@ export default function Experience() {
 
   return (
     <VStack textAlign={'left'}>
-      <Heading>Experience</Heading>
+      <Heading>Personal Projects</Heading>
       <SimpleGrid
         columns={{ base: 1, sm: 2, md: 2 }}
         spacing={6}
@@ -109,8 +110,8 @@ export default function Experience() {
       <Divider />
       {formData?.experienceList &&
         formData.experienceList.map((item) => (
-          <ExperienceItem
-            key={'experience_item_' + item._id}
+          <PersonalProjectItem
+            key={'personal_project_item_' + item._id}
             removeExperience={handleRemoveExperience}
             readOnly={true}
             exp={item}
@@ -118,7 +119,7 @@ export default function Experience() {
           />
         ))}
       <Divider />
-      <ExperienceItem readOnly={false} addExperience={handleAddExperience} />
+      <PersonalProjectItem readOnly={false} addExperience={handleAddItem} />
     </VStack>
   );
 }

@@ -95,7 +95,7 @@ export default function SkillMatrix() {
 
   return (
     <VStack textAlign={'left'}>
-      <Heading>Other</Heading>
+      <Heading>Skills Matrix</Heading>
       <SimpleGrid
         columns={{ base: 1, sm: 2, md: 2 }}
         spacing={6}

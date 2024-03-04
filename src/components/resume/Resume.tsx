@@ -21,6 +21,7 @@ import Education from './education';
 import OtherSkills from './otherSkills';
 import Other from './other';
 import SkillMatrix from './skillMatrix';
+import PersonalProjects from './personalProjects';
 
 export default function Resume() {
   const profileData = useGlobalSelector((state) => {
@@ -33,6 +34,7 @@ export default function Resume() {
       other: state.other.other,
       certificates: state.certificates.certificates,
       skillsMatrix: state.skillMatrix.skillMatrix,
+      personalProjects: state.personalProjects.personalProjects,
     };
     return resume;
   });
@@ -90,6 +92,9 @@ export default function Resume() {
           </TabPanel>
           <TabPanel>
             <SkillMatrix />
+          </TabPanel>
+          <TabPanel>
+            <PersonalProjects />
           </TabPanel>
         </TabPanels>
       </Tabs>

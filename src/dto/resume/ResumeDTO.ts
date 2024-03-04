@@ -4,7 +4,7 @@ import ExperienceDTO from './ExperienceDTO';
 import IntroductionDTO from './IntroductionDTO';
 import OtherDTO from './OtherDTO';
 import OtherSkillsDTO from './OtherSkillsDTO';
-import PersonalProjectsDTO from './PersonalProjectxDTO';
+import PersonalProjectsDTO from './PersonalProjectDTO';
 import ProfileDTO from './ProfileDTO';
 import SkillsMatrixDTO from './SkillsMatrixDTO';
 
