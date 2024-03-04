@@ -22,6 +22,7 @@ import OtherSkills from './otherSkills';
 import Other from './other';
 import SkillMatrix from './skillMatrix';
 import PersonalProjects from './personalProjects';
+import Certificate from './certificate';
 
 export default function Resume() {
   const profileData = useGlobalSelector((state) => {
@@ -95,6 +96,9 @@ export default function Resume() {
           </TabPanel>
           <TabPanel>
             <PersonalProjects />
+          </TabPanel>
+          <TabPanel>
+            <Certificate />
           </TabPanel>
         </TabPanels>
       </Tabs>
