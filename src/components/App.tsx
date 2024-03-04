@@ -13,16 +13,16 @@ export const App = () => {
   return (
     <ChakraProvider theme={theme}>
       <Provider store={resumeStore}>
-        <Box textAlign="center" fontSize="xl">
+        <Box textAlign="center" w={'full'} fontSize="xl">
           <HashRouter>
             <Header />
-            <Container maxW={'7xl'} marginTop={'64px'} textAlign={'justify'}>
+            <Box w={'full'} marginTop={'64px'} textAlign={'justify'}>
               <Routes>
                 <Route path="/about" element={<About />} />
                 <Route path="/" element={<Home />} />
                 <Route path="/fill-up-resume" element={<Resume />} />
               </Routes>
-            </Container>
+            </Box>
           </HashRouter>
         </Box>
       </Provider>

@@ -56,7 +56,7 @@ export default function Introduction() {
           <FormHelperText>Insert introductions title</FormHelperText>
         </FormControl>
         <FormControl>
-          <FormLabel htmlFor="firstName">Content</FormLabel>
+          <FormLabel htmlFor="description">Content</FormLabel>
           <Textarea
             noOfLines={30}
             minH={'60vh'}
@@ -73,7 +73,7 @@ export default function Introduction() {
             width={'full'}
             onChange={(e) => handleOnChangeTextArea(e)}
             value={formData?.footer}
-            id="description"
+            id="footer"
           />
           <FormHelperText>Insert introduction content</FormHelperText>
         </FormControl>

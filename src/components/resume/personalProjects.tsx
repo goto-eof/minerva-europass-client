@@ -112,16 +112,18 @@ export default function PersonalProjects() {
         </FormControl>
       </SimpleGrid>
       <Divider />
-      {formData?.experienceList &&
-        formData.experienceList.map((item) => (
-          <PersonalProjectItem
-            key={'personal_project_item_' + item._id}
-            removeExperience={handleRemoveExperience}
-            readOnly={true}
-            exp={item}
-            updateExperience={updateExperience}
-          />
-        ))}
+      <SimpleGrid columns={{ base: 1, md: 2 }}>
+        {formData?.experienceList &&
+          formData.experienceList.map((item) => (
+            <PersonalProjectItem
+              key={'personal_project_item_' + item._id}
+              removeExperience={handleRemoveExperience}
+              readOnly={true}
+              exp={item}
+              updateExperience={updateExperience}
+            />
+          ))}
+      </SimpleGrid>
       <Divider />
       <PersonalProjectItem readOnly={false} addExperience={handleAddItem} />
     </VStack>

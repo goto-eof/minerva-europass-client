@@ -16,6 +16,13 @@ export const ColorModeSwitcher: React.FC<ColorModeSwitcherProps> = (props) => {
   const switchColor = () => {
     toggleColorMode();
   };
+
+  React.useEffect(() => {
+    if (!localStorage.getItem('chakra-ui-color-mode')) {
+      localStorage.setItem('chakra-ui-color-mode', 'dark');
+    }
+  }, []);
+
   return (
     <IconButton
       size="md"

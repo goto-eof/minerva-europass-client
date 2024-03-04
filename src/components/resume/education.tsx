@@ -102,16 +102,18 @@ export default function Education() {
         </FormControl>
       </SimpleGrid>
       <Divider />
-      {formData?.educationList &&
-        formData.educationList.map((item, idx) => (
-          <EducationItem
-            key={'education_' + idx}
-            removeItem={handleRemoveItem}
-            readOnly={true}
-            exp={item}
-            updateItem={updateItem}
-          />
-        ))}
+      <SimpleGrid columns={{ base: 1, md: 2 }}>
+        {formData?.educationList &&
+          formData.educationList.map((item, idx) => (
+            <EducationItem
+              key={'education_' + idx}
+              removeItem={handleRemoveItem}
+              readOnly={true}
+              exp={item}
+              updateItem={updateItem}
+            />
+          ))}
+      </SimpleGrid>
       <Divider />
       <EducationItem readOnly={false} addItem={handleAddItem} />
     </VStack>

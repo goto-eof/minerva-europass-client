@@ -1,4 +1,10 @@
 import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Box,
   Button,
   Container,
   Divider,
@@ -8,11 +14,12 @@ import {
   TabPanels,
   Tabs,
   css,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import Profile from './Profile';
 import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
 import ResumeDTO from '../../dto/resume/ResumeDTO';
-import { useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import ResumeApiService from '../../service/ResumeApiService';
 import Introduction from './introduction';
 import Experience from './experience';
@@ -101,8 +108,17 @@ export default function Resume() {
   useEffect(() => {
     console.log(profileData);
   }, [profileData]);
+
+  const [isLargerThan800] = useMediaQuery('(min-width: 900px)');
+  if (isLargerThan800) {
+    return <LargeScreen generatePDF={generatePDF} />;
+  }
+  return <SmallScreen generatePDF={generatePDF} />;
+}
+
+function LargeScreen({ generatePDF }: { generatePDF: () => void }) {
   return (
-    <Container>
+    <Box w={'full'}>
       <Tabs>
         <TabList>
           <Tab>Profile</Tab>
@@ -149,8 +165,54 @@ export default function Resume() {
 
       <Divider />
       <Button width={'full'} colorScheme="blue" onClick={generatePDF}>
-        Generate PDF
+        Save & Generate PDF
       </Button>
-    </Container>
+    </Box>
+  );
+}
+
+function SmallScreen({ generatePDF }: { generatePDF: () => void }) {
+  return (
+    <Box>
+      <Accordion allowToggle>
+        <AccordionElement title={'Profile'} child={<Profile />} />
+        <AccordionElement title={'Introduction'} child={<Introduction />} />
+        <AccordionElement title={'Experience'} child={<Experience />} />
+        <AccordionElement title={'Education'} child={<Education />} />
+        <AccordionElement title={'Other Skills'} child={<OtherSkills />} />
+        <AccordionElement title={'Other'} child={<Other />} />
+        <AccordionElement
+          title={'Personal Projects'}
+          child={<PersonalProjects />}
+        />
+        <AccordionElement title={'Certificates'} child={<Certificate />} />
+      </Accordion>
+      <Divider />
+      <Button width={'full'} colorScheme="blue" onClick={generatePDF}>
+        Save & Generate PDF
+      </Button>
+    </Box>
+  );
+}
+
+function AccordionElement({
+  title,
+  child,
+}: {
+  title: string;
+  child: ReactNode;
+}) {
+  return (
+    <AccordionItem>
+      <h2>
+        <AccordionButton>
+          <Box as="span" flex="1" textAlign="left">
+            {title}
+          </Box>
+          <AccordionIcon />
+        </AccordionButton>
+      </h2>
+      <AccordionPanel pb={4}>{child}</AccordionPanel>
+    </AccordionItem>
   );
 }

@@ -109,16 +109,18 @@ export default function Certificate() {
         </FormControl>
       </SimpleGrid>
       <Divider />
-      {formData?.certificateList &&
-        formData.certificateList.map((item) => (
-          <CertificateItem
-            key={'certificate_' + item._id}
-            remove={handleRemoveExperience}
-            readOnly={true}
-            exp={item}
-            update={updateExperience}
-          />
-        ))}
+      <SimpleGrid w={'full'} columns={{ base: 1, md: 2 }}>
+        {formData?.certificateList &&
+          formData.certificateList.map((item) => (
+            <CertificateItem
+              key={'certificate_' + item._id}
+              remove={handleRemoveExperience}
+              readOnly={true}
+              exp={item}
+              update={updateExperience}
+            />
+          ))}
+      </SimpleGrid>
       <Divider />
       <CertificateItem readOnly={false} add={handleAddItem} />
     </VStack>
