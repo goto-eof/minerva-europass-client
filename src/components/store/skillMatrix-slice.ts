@@ -14,7 +14,11 @@ export const skillMatrixSlice = createSlice({
     replaceSkillMatrix(state, payloadAction: PayloadAction<SkillsMatrixDTO>) {
       state.skillMatrix = payloadAction.payload;
     },
+    resetSkillMatrix(state) {
+      state.skillMatrix = undefined;
+    },
   },
 });
 
-export const { replaceSkillMatrix } = skillMatrixSlice.actions;
+export const { replaceSkillMatrix, resetSkillMatrix } =
+  skillMatrixSlice.actions;

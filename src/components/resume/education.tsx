@@ -9,7 +9,7 @@ import {
   Textarea,
   VStack,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
 import EducationDTO from '../../dto/resume/EducationDTO';
 import EducationItemDTO from '../../dto/resume/EducationItemDTO';
@@ -17,6 +17,7 @@ import { replaceEducation } from '../store/education-slice';
 import EducationItem from './EducationItem';
 
 export default function Education() {
+  const formRef = useRef<HTMLFormElement>(null);
   const data = useGlobalSelector((state) => {
     return state.education.education;
   });
@@ -25,6 +26,9 @@ export default function Education() {
 
   useEffect(() => {
     setFormData(data);
+    if (!data) {
+      formRef.current?.reset();
+    }
   }, [data]);
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,46 +80,48 @@ export default function Education() {
   return (
     <VStack textAlign={'left'}>
       <Heading>Education</Heading>
-      <SimpleGrid
-        columns={{ base: 1, sm: 2, md: 2 }}
-        spacing={6}
-        width={'full'}
-      >
-        <FormControl>
-          <FormLabel htmlFor="title">Title</FormLabel>
-          <Input
-            onChange={(e) => handleOnChange(e)}
-            value={formData?.title}
-            id="title"
-          />
-          <FormHelperText>Insert education section title</FormHelperText>
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="description">Description</FormLabel>
-          <Textarea
-            width={'full'}
-            onChange={(e) => handleOnChangeTextArea(e)}
-            value={formData?.description}
-            id="description"
-          />
-          <FormHelperText>Insert education description</FormHelperText>
-        </FormControl>
-      </SimpleGrid>
-      <Divider />
-      <SimpleGrid columns={{ base: 1, md: 2 }}>
-        {formData?.educationList &&
-          formData.educationList.map((item, idx) => (
-            <EducationItem
-              key={'education_' + idx}
-              removeItem={handleRemoveItem}
-              readOnly={true}
-              exp={item}
-              updateItem={updateItem}
+      <form ref={formRef}>
+        <SimpleGrid
+          columns={{ base: 1, sm: 2, md: 2 }}
+          spacing={6}
+          width={'full'}
+        >
+          <FormControl>
+            <FormLabel htmlFor="title">Title</FormLabel>
+            <Input
+              onChange={(e) => handleOnChange(e)}
+              value={formData?.title}
+              id="title"
             />
-          ))}
-      </SimpleGrid>
-      <Divider />
-      <EducationItem readOnly={false} addItem={handleAddItem} />
+            <FormHelperText>Insert education section title</FormHelperText>
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="description">Description</FormLabel>
+            <Textarea
+              width={'full'}
+              onChange={(e) => handleOnChangeTextArea(e)}
+              value={formData?.description || ''}
+              id="description"
+            />
+            <FormHelperText>Insert education description</FormHelperText>
+          </FormControl>
+        </SimpleGrid>
+        <Divider />
+        <SimpleGrid columns={{ base: 1, md: 2 }}>
+          {formData?.educationList &&
+            formData.educationList.map((item, idx) => (
+              <EducationItem
+                key={'education_' + idx}
+                removeItem={handleRemoveItem}
+                readOnly={true}
+                exp={item}
+                updateItem={updateItem}
+              />
+            ))}
+        </SimpleGrid>
+        <Divider />
+        <EducationItem readOnly={false} addItem={handleAddItem} />
+      </form>
     </VStack>
   );
 }

@@ -257,7 +257,7 @@ export default function PersonalProjectItem({
           <FormLabel htmlFor="description">Description</FormLabel>
           <Textarea
             onChange={handleOnChangeTextArea}
-            value={experience.description}
+            value={experience.description || ''}
             id="description"
           />
           <FormHelperText>project description</FormHelperText>

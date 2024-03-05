@@ -14,7 +14,11 @@ export const certificatesSlice = createSlice({
     replaceCertificates(state, payloadAction: PayloadAction<CertificatesDTO>) {
       state.certificates = payloadAction.payload;
     },
+    resetCertificates(state) {
+      state.certificates = undefined;
+    },
   },
 });
 
-export const { replaceCertificates } = certificatesSlice.actions;
+export const { replaceCertificates, resetCertificates } =
+  certificatesSlice.actions;

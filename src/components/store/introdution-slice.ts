@@ -14,7 +14,11 @@ export const introductionSlice = createSlice({
     replaceIntroduction(state, payloadAction: PayloadAction<IntroductionDTO>) {
       state.introduction = payloadAction.payload;
     },
+    resetIntroduction(state) {
+      state.introduction = undefined;
+    },
   },
 });
 
-export const { replaceIntroduction } = introductionSlice.actions;
+export const { replaceIntroduction, resetIntroduction } =
+  introductionSlice.actions;

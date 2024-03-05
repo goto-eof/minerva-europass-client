@@ -9,7 +9,7 @@ import {
   Textarea,
   VStack,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
 import OtherDTO from '../../dto/resume/OtherDTO';
 import { replaceOther } from '../store/other-slice';
@@ -17,6 +17,7 @@ import KeyValueDTO from '../../dto/resume/KeyValueDTO';
 import GenericMap from './GenericMap';
 
 export default function Other() {
+  const formRef = useRef<HTMLFormElement>(null);
   const data = useGlobalSelector((state) => {
     return state.other.other;
   });
@@ -25,6 +26,9 @@ export default function Other() {
 
   useEffect(() => {
     setFormData(data);
+    if (!data) {
+      formRef.current?.reset();
+    }
   }, [data]);
 
   const addToMap = (keyValue: KeyValueDTO, fieldName: string) => {
@@ -70,16 +74,18 @@ export default function Other() {
       <Heading>Other</Heading>
 
       <Divider />
-      <GenericMap
-        key={'others'}
-        title="Other"
-        keyTitle="Category"
-        valueTitle="Content"
-        addButtonTitle={'Add other skill'}
-        addItem={addItem}
-        removeItem={removeItem}
-        map={formData?.otherList}
-      />
+      <form ref={formRef}>
+        <GenericMap
+          key={'others'}
+          title="Other"
+          keyTitle="Category"
+          valueTitle="Content"
+          addButtonTitle={'Add other skill'}
+          addItem={addItem}
+          removeItem={removeItem}
+          map={formData?.otherList}
+        />
+      </form>
     </VStack>
   );
 }

@@ -8,6 +8,8 @@ import {
   Button,
   Container,
   Divider,
+  Flex,
+  SimpleGrid,
   Tab,
   TabList,
   TabPanel,
@@ -23,22 +25,36 @@ import { ReactNode, useEffect } from 'react';
 import ResumeApiService from '../../service/ResumeApiService';
 import Introduction from './introduction';
 import Experience from './experience';
-import EducationItem from './EducationItem';
 import Education from './education';
 import OtherSkills from './otherSkills';
 import Other from './other';
 import SkillMatrix from './skillMatrix';
 import PersonalProjects from './personalProjects';
 import Certificate from './certificate';
-import { replaceProfile } from '../store/profile-slice';
-import { replaceIntroduction } from '../store/introdution-slice';
-import { replaceExperience } from '../store/experience-slice';
-import { replaceEducation } from '../store/education-slice';
-import { replaceOther } from '../store/other-slice';
-import { replaceOtherSkills } from '../store/odtheSkills-slice';
-import { replaceCertificates } from '../store/certificates-slice';
-import { replaceSkillMatrix } from '../store/skillMatrix-slice';
-import { replacePersonalProjects } from '../store/personalProjects-slice';
+import { replaceProfile, resetProfile } from '../store/profile-slice';
+import {
+  replaceIntroduction,
+  resetIntroduction,
+} from '../store/introdution-slice';
+import { replaceExperience, resetExperience } from '../store/experience-slice';
+import { replaceEducation, resetEducation } from '../store/education-slice';
+import { replaceOther, resetOther } from '../store/other-slice';
+import {
+  replaceOtherSkills,
+  resetOtherSkills,
+} from '../store/odtheSkills-slice';
+import {
+  replaceCertificates,
+  resetCertificates,
+} from '../store/certificates-slice';
+import {
+  replaceSkillMatrix,
+  resetSkillMatrix,
+} from '../store/skillMatrix-slice';
+import {
+  replacePersonalProjects,
+  resetPersonalProjects,
+} from '../store/personalProjects-slice';
 
 export default function Resume() {
   const profileData: ResumeDTO = useGlobalSelector((state) => {
@@ -55,6 +71,7 @@ export default function Resume() {
     };
     return resume;
   });
+  const dispatch = useGlobalDispatch();
 
   const generatePDF = async () => {
     const stringify = JSON.stringify(profileData);
@@ -63,7 +80,19 @@ export default function Resume() {
     saveByteArray('Resume.pdf', byte);
   };
 
-  const dispatch = useGlobalDispatch();
+  const clearAllData = () => {
+    localStorage.removeItem('data');
+    dispatch(resetProfile());
+    dispatch(resetIntroduction());
+    dispatch(resetExperience());
+    dispatch(resetEducation());
+    dispatch(resetOtherSkills());
+    dispatch(resetOther());
+    dispatch(resetCertificates());
+    dispatch(resetSkillMatrix());
+    dispatch(resetPersonalProjects());
+  };
+
   useEffect(() => {
     const data = localStorage.getItem('data');
     const resume: ResumeDTO = JSON.parse(data || '{}');
@@ -111,12 +140,20 @@ export default function Resume() {
 
   const [isLargerThan800] = useMediaQuery('(min-width: 900px)');
   if (isLargerThan800) {
-    return <LargeScreen generatePDF={generatePDF} />;
+    return (
+      <LargeScreen clearAllData={clearAllData} generatePDF={generatePDF} />
+    );
   }
-  return <SmallScreen generatePDF={generatePDF} />;
+  return <SmallScreen clearAllData={clearAllData} generatePDF={generatePDF} />;
 }
 
-function LargeScreen({ generatePDF }: { generatePDF: () => void }) {
+function LargeScreen({
+  generatePDF,
+  clearAllData,
+}: {
+  generatePDF: () => void;
+  clearAllData: () => void;
+}) {
   return (
     <Box w={'full'}>
       <Tabs>
@@ -164,14 +201,25 @@ function LargeScreen({ generatePDF }: { generatePDF: () => void }) {
       </Tabs>
 
       <Divider />
-      <Button width={'full'} colorScheme="blue" onClick={generatePDF}>
-        Save & Generate PDF
-      </Button>
+      <SimpleGrid spacing={3} columns={{ base: 1, md: 2 }}>
+        <Button colorScheme="red" onClick={clearAllData}>
+          Clear all data
+        </Button>
+        <Button colorScheme="blue" onClick={generatePDF}>
+          Save & Generate PDF
+        </Button>
+      </SimpleGrid>
     </Box>
   );
 }
 
-function SmallScreen({ generatePDF }: { generatePDF: () => void }) {
+function SmallScreen({
+  generatePDF,
+  clearAllData,
+}: {
+  generatePDF: () => void;
+  clearAllData: () => void;
+}) {
   return (
     <Box>
       <Accordion allowToggle>
@@ -181,6 +229,7 @@ function SmallScreen({ generatePDF }: { generatePDF: () => void }) {
         <AccordionElement title={'Education'} child={<Education />} />
         <AccordionElement title={'Other Skills'} child={<OtherSkills />} />
         <AccordionElement title={'Other'} child={<Other />} />
+        <AccordionElement title={'Skills Matrix'} child={<SkillMatrix />} />
         <AccordionElement
           title={'Personal Projects'}
           child={<PersonalProjects />}
@@ -188,9 +237,14 @@ function SmallScreen({ generatePDF }: { generatePDF: () => void }) {
         <AccordionElement title={'Certificates'} child={<Certificate />} />
       </Accordion>
       <Divider />
-      <Button width={'full'} colorScheme="blue" onClick={generatePDF}>
-        Save & Generate PDF
-      </Button>
+      <SimpleGrid spacing={3} columns={{ base: 1, md: 2 }}>
+        <Button colorScheme="red" onClick={clearAllData}>
+          Clear all data
+        </Button>
+        <Button colorScheme="blue" onClick={generatePDF}>
+          Save & Generate PDF
+        </Button>
+      </SimpleGrid>
     </Box>
   );
 }

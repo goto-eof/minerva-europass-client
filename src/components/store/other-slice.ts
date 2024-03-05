@@ -14,7 +14,10 @@ export const otherSlice = createSlice({
     replaceOther(state, payloadAction: PayloadAction<OtherDTO>) {
       state.other = payloadAction.payload;
     },
+    resetOther(state) {
+      state.other = undefined;
+    },
   },
 });
 
-export const { replaceOther } = otherSlice.actions;
+export const { replaceOther, resetOther } = otherSlice.actions;

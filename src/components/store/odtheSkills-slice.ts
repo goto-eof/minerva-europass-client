@@ -14,7 +14,11 @@ export const otherSkillsSlice = createSlice({
     replaceOtherSkills(state, payloadAction: PayloadAction<OtherSkillsDTO>) {
       state.otherSkills = payloadAction.payload;
     },
+    resetOtherSkills(state) {
+      state.otherSkills = undefined;
+    },
   },
 });
 
-export const { replaceOtherSkills } = otherSkillsSlice.actions;
+export const { replaceOtherSkills, resetOtherSkills } =
+  otherSkillsSlice.actions;

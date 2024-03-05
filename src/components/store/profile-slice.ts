@@ -14,7 +14,10 @@ export const profileSlice = createSlice({
     replaceProfile(state, payloadAction: PayloadAction<ProfileDTO>) {
       state.profile = payloadAction.payload;
     },
+    resetProfile(state) {
+      state.profile = undefined;
+    },
   },
 });
 
-export const { replaceProfile } = profileSlice.actions;
+export const { replaceProfile, resetProfile } = profileSlice.actions;

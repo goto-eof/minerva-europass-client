@@ -14,7 +14,10 @@ export const experienceSlice = createSlice({
     replaceExperience(state, payloadAction: PayloadAction<ExperienceDTO>) {
       state.experience = payloadAction.payload;
     },
+    resetExperience(state) {
+      state.experience = undefined;
+    },
   },
 });
 
-export const { replaceExperience } = experienceSlice.actions;
+export const { replaceExperience, resetExperience } = experienceSlice.actions;

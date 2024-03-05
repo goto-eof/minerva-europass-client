@@ -215,7 +215,7 @@ export default function ExperienceItem({
           <FormLabel htmlFor="description">Description</FormLabel>
           <Textarea
             onChange={handleOnChangeTextArea}
-            value={experience.description}
+            value={experience.description || ''}
             id="description"
           />
           <FormHelperText>project description</FormHelperText>

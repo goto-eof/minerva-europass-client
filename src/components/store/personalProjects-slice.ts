@@ -17,7 +17,11 @@ export const personalProjectsSlice = createSlice({
     ) {
       state.personalProjects = payloadAction.payload;
     },
+    resetPersonalProjects(state) {
+      state.personalProjects = undefined;
+    },
   },
 });
 
-export const { replacePersonalProjects } = personalProjectsSlice.actions;
+export const { replacePersonalProjects, resetPersonalProjects } =
+  personalProjectsSlice.actions;

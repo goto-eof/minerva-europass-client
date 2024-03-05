@@ -14,7 +14,10 @@ export const educationSlice = createSlice({
     replaceEducation(state, payloadAction: PayloadAction<EducationDTO>) {
       state.education = payloadAction.payload;
     },
+    resetEducation(state) {
+      state.education = undefined;
+    },
   },
 });
 
-export const { replaceEducation } = educationSlice.actions;
+export const { replaceEducation, resetEducation } = educationSlice.actions;

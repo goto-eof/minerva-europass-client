@@ -9,7 +9,7 @@ import {
   Textarea,
   VStack,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
 import { replaceExperience } from '../store/experience-slice';
 import ExperienceItemDTO from '../../dto/resume/ExperienceItemDTO';
@@ -18,6 +18,7 @@ import { replacePersonalProjects } from '../store/personalProjects-slice';
 import PersonalProjectItem from './PersonalProjectItem';
 
 export default function PersonalProjects() {
+  const formRef = useRef<HTMLFormElement>(null);
   const data = useGlobalSelector((state) => {
     return state.personalProjects.personalProjects;
   });
@@ -28,6 +29,9 @@ export default function PersonalProjects() {
 
   useEffect(() => {
     setFormData(data);
+    if (!data) {
+      formRef.current?.reset();
+    }
   }, [data]);
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,46 +90,48 @@ export default function PersonalProjects() {
   return (
     <VStack textAlign={'left'}>
       <Heading>Personal Projects</Heading>
-      <SimpleGrid
-        columns={{ base: 1, sm: 2, md: 2 }}
-        spacing={6}
-        width={'full'}
-      >
-        <FormControl>
-          <FormLabel htmlFor="title">Title</FormLabel>
-          <Input
-            onChange={(e) => handleOnChange(e)}
-            value={formData?.title}
-            id="title"
-          />
-          <FormHelperText>Insert experience section title</FormHelperText>
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="description">Description</FormLabel>
-          <Textarea
-            width={'full'}
-            onChange={(e) => handleOnChangeTextArea(e)}
-            value={formData?.description}
-            id="description"
-          />
-          <FormHelperText>Insert experience description</FormHelperText>
-        </FormControl>
-      </SimpleGrid>
-      <Divider />
-      <SimpleGrid columns={{ base: 1, md: 2 }}>
-        {formData?.experienceList &&
-          formData.experienceList.map((item) => (
-            <PersonalProjectItem
-              key={'personal_project_item_' + item._id}
-              removeExperience={handleRemoveExperience}
-              readOnly={true}
-              exp={item}
-              updateExperience={updateExperience}
+      <form ref={formRef}>
+        <SimpleGrid
+          columns={{ base: 1, sm: 2, md: 2 }}
+          spacing={6}
+          width={'full'}
+        >
+          <FormControl>
+            <FormLabel htmlFor="title">Title</FormLabel>
+            <Input
+              onChange={(e) => handleOnChange(e)}
+              value={formData?.title}
+              id="title"
             />
-          ))}
-      </SimpleGrid>
-      <Divider />
-      <PersonalProjectItem readOnly={false} addExperience={handleAddItem} />
+            <FormHelperText>Insert experience section title</FormHelperText>
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="description">Description</FormLabel>
+            <Textarea
+              width={'full'}
+              onChange={(e) => handleOnChangeTextArea(e)}
+              value={formData?.description || ''}
+              id="description"
+            />
+            <FormHelperText>Insert experience description</FormHelperText>
+          </FormControl>
+        </SimpleGrid>
+        <Divider />
+        <SimpleGrid columns={{ base: 1, md: 2 }}>
+          {formData?.experienceList &&
+            formData.experienceList.map((item) => (
+              <PersonalProjectItem
+                key={'personal_project_item_' + item._id}
+                removeExperience={handleRemoveExperience}
+                readOnly={true}
+                exp={item}
+                updateExperience={updateExperience}
+              />
+            ))}
+        </SimpleGrid>
+        <Divider />
+        <PersonalProjectItem readOnly={false} addExperience={handleAddItem} />
+      </form>
     </VStack>
   );
 }

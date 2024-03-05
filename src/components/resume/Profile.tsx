@@ -10,12 +10,13 @@ import {
 import { replaceProfile } from '../store/profile-slice';
 import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
 import ProfileDTO from '../../dto/resume/ProfileDTO';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import GenericList from './GenericList';
 import GenericMap from './GenericMap';
 import KeyValueDTO from '../../dto/resume/KeyValueDTO';
 
 export default function Profile() {
+  const formRef = useRef<HTMLFormElement>(null);
   const profileData = useGlobalSelector((state) => {
     return state.profile.profile;
   });
@@ -23,6 +24,9 @@ export default function Profile() {
 
   useEffect(() => {
     setFormData(profileData);
+    if (!profileData) {
+      formRef.current?.reset();
+    }
   }, [profileData]);
 
   const dispatch = useGlobalDispatch();
@@ -153,151 +157,153 @@ export default function Profile() {
   return (
     <VStack textAlign={'left'}>
       <Heading>Profile</Heading>
-      <SimpleGrid
-        columns={{ base: 1, sm: 2, md: 2 }}
-        spacing={6}
-        width={'full'}
-      >
-        <FormControl>
-          <FormLabel htmlFor="firstName">First name</FormLabel>
-          <Input
-            onChange={(e) => handleOnChange(e)}
-            value={formData?.firstName}
-            name="firstName"
-            id="firstName"
-          />
-          <FormHelperText>Insert your first name</FormHelperText>
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="lastName">Last name</FormLabel>
-          <Input
-            onChange={(e) => handleOnChange(e)}
-            name="lastName"
-            value={formData?.lastName}
-            id="lastName"
-          />
-          <FormHelperText>Insert your last name</FormHelperText>
-        </FormControl>
-      </SimpleGrid>
-      <SimpleGrid width={'full'}>
-        <FormControl>
-          <FormLabel htmlFor="birthDate">Birth date</FormLabel>
-          <Input
-            onChange={(e) => handleOnChangeDate(e)}
-            name="birthDate"
-            id="birthDate"
-            value={formData?.birthDate}
-            placeholder="Select Date and Time"
-            size="md"
-            type="date"
-          />
-        </FormControl>
-      </SimpleGrid>
-      <SimpleGrid
-        columns={{ base: 1, sm: 3, md: 3 }}
-        spacing={6}
-        width={'full'}
-      >
-        <FormControl>
-          <FormLabel htmlFor="city">City</FormLabel>
-          <Input
-            onChange={(e) => handleOnChange(e)}
-            value={formData?.city}
-            name="city"
-            id="city"
-          />
-          <FormHelperText>Insert your city</FormHelperText>
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="county">County</FormLabel>
-          <Input
-            onChange={(e) => handleOnChange(e)}
-            name="county"
-            value={formData?.county}
-            id="county"
-          />
-          <FormHelperText>Insert your county</FormHelperText>
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="country">Country</FormLabel>
-          <Input
-            onChange={(e) => handleOnChange(e)}
-            name="country"
-            value={formData?.country}
-            id="country"
-          />
-          <FormHelperText>Insert your country</FormHelperText>
-        </FormControl>
-      </SimpleGrid>
-      <SimpleGrid width={'full'}>
-        <FormControl>
-          <FormLabel htmlFor="jobTitle">Job title</FormLabel>
-          <Input
-            onChange={(e) => handleOnChange(e)}
-            name="jobTitle"
-            value={formData?.jobTitle}
-            id="jobTitle"
-          />
-          <FormHelperText>Insert your Job title</FormHelperText>
-        </FormControl>
-      </SimpleGrid>
-      <GenericList
-        readOnly={false}
-        key={'nationalities'}
-        title="Nationalities"
-        removeItem={removeNationality}
-        list={formData?.citizenshipList}
-        addItem={addNationality}
-      />
-      <GenericMap
-        keyTitle="E-mail type"
-        valueTitle="E-mail"
-        key={'e-mails'}
-        title="E-Mails"
-        addButtonTitle={'Add E-Mail'}
-        addItem={addEmail}
-        removeItem={removeEmail}
-        map={formData?.emailMap}
-      />
-      <GenericMap
-        keyTitle="Phone type"
-        valueTitle="Phone number"
-        key={'phone-numbers'}
-        title="Phone numbers"
-        addButtonTitle={'Add Phone number'}
-        addItem={addPhoneNumber}
-        removeItem={removePhoneNumber}
-        map={formData?.phoneNumberMap}
-      />
+      <form ref={formRef}>
+        <SimpleGrid
+          columns={{ base: 1, sm: 2, md: 2 }}
+          spacing={6}
+          width={'full'}
+        >
+          <FormControl>
+            <FormLabel htmlFor="firstName">First name</FormLabel>
+            <Input
+              onChange={(e) => handleOnChange(e)}
+              value={formData?.firstName}
+              name="firstName"
+              id="firstName"
+            />
+            <FormHelperText>Insert your first name</FormHelperText>
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="lastName">Last name</FormLabel>
+            <Input
+              onChange={(e) => handleOnChange(e)}
+              name="lastName"
+              value={formData?.lastName}
+              id="lastName"
+            />
+            <FormHelperText>Insert your last name</FormHelperText>
+          </FormControl>
+        </SimpleGrid>
+        <SimpleGrid width={'full'}>
+          <FormControl>
+            <FormLabel htmlFor="birthDate">Birth date</FormLabel>
+            <Input
+              onChange={(e) => handleOnChangeDate(e)}
+              name="birthDate"
+              id="birthDate"
+              value={formData?.birthDate}
+              placeholder="Select Date and Time"
+              size="md"
+              type="date"
+            />
+          </FormControl>
+        </SimpleGrid>
+        <SimpleGrid
+          columns={{ base: 1, sm: 3, md: 3 }}
+          spacing={6}
+          width={'full'}
+        >
+          <FormControl>
+            <FormLabel htmlFor="city">City</FormLabel>
+            <Input
+              onChange={(e) => handleOnChange(e)}
+              value={formData?.city}
+              name="city"
+              id="city"
+            />
+            <FormHelperText>Insert your city</FormHelperText>
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="county">County</FormLabel>
+            <Input
+              onChange={(e) => handleOnChange(e)}
+              name="county"
+              value={formData?.county}
+              id="county"
+            />
+            <FormHelperText>Insert your county</FormHelperText>
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="country">Country</FormLabel>
+            <Input
+              onChange={(e) => handleOnChange(e)}
+              name="country"
+              value={formData?.country}
+              id="country"
+            />
+            <FormHelperText>Insert your country</FormHelperText>
+          </FormControl>
+        </SimpleGrid>
+        <SimpleGrid width={'full'}>
+          <FormControl>
+            <FormLabel htmlFor="jobTitle">Job title</FormLabel>
+            <Input
+              onChange={(e) => handleOnChange(e)}
+              name="jobTitle"
+              value={formData?.jobTitle}
+              id="jobTitle"
+            />
+            <FormHelperText>Insert your Job title</FormHelperText>
+          </FormControl>
+        </SimpleGrid>
+        <GenericList
+          readOnly={false}
+          key={'nationalities'}
+          title="Nationalities"
+          removeItem={removeNationality}
+          list={formData?.citizenshipList}
+          addItem={addNationality}
+        />
+        <GenericMap
+          keyTitle="E-mail type"
+          valueTitle="E-mail"
+          key={'e-mails'}
+          title="E-Mails"
+          addButtonTitle={'Add E-Mail'}
+          addItem={addEmail}
+          removeItem={removeEmail}
+          map={formData?.emailMap}
+        />
+        <GenericMap
+          keyTitle="Phone type"
+          valueTitle="Phone number"
+          key={'phone-numbers'}
+          title="Phone numbers"
+          addButtonTitle={'Add Phone number'}
+          addItem={addPhoneNumber}
+          removeItem={removePhoneNumber}
+          map={formData?.phoneNumberMap}
+        />
 
-      <GenericMap
-        keyTitle="URL type"
-        valueTitle="URL"
-        key={'urls'}
-        title="URLs"
-        addButtonTitle={'Add URL'}
-        addItem={addUrl}
-        removeItem={removeUrl}
-        map={formData?.urlMap}
-      />
+        <GenericMap
+          keyTitle="URL type"
+          valueTitle="URL"
+          key={'urls'}
+          title="URLs"
+          addButtonTitle={'Add URL'}
+          addItem={addUrl}
+          removeItem={removeUrl}
+          map={formData?.urlMap}
+        />
 
-      <GenericList
-        readOnly={false}
-        key={'mainSkills'}
-        title="Main Skills"
-        removeItem={removeMainSkill}
-        list={formData?.mainSkillList}
-        addItem={addMainSkill}
-      />
+        <GenericList
+          readOnly={false}
+          key={'mainSkills'}
+          title="Main Skills"
+          removeItem={removeMainSkill}
+          list={formData?.mainSkillList}
+          addItem={addMainSkill}
+        />
 
-      <GenericList
-        readOnly={false}
-        key={'languages'}
-        title="Languages"
-        removeItem={removeLanguage}
-        list={formData?.languageList}
-        addItem={addLanguage}
-      />
+        <GenericList
+          readOnly={false}
+          key={'languages'}
+          title="Languages"
+          removeItem={removeLanguage}
+          list={formData?.languageList}
+          addItem={addLanguage}
+        />
+      </form>
     </VStack>
   );
 }

@@ -14,7 +14,7 @@ import {
   Textarea,
   VStack,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
 import SkillsMatrixDTO from '../../dto/resume/SkillsMatrixDTO';
 import { replaceSkillMatrix } from '../store/skillMatrix-slice';
@@ -28,7 +28,13 @@ export default function SkillMatrix() {
   });
   const dispatch = useGlobalDispatch();
   const [formData, setFormData] = useState<SkillsMatrixDTO | undefined>(data);
-
+  const formRef = useRef<HTMLFormElement>(null);
+  useEffect(() => {
+    setFormData(data);
+    if (!data) {
+      formRef.current?.reset();
+    }
+  }, [data]);
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
     dispatch(
@@ -96,40 +102,42 @@ export default function SkillMatrix() {
   return (
     <VStack textAlign={'left'}>
       <Heading>Skills Matrix</Heading>
-      <SimpleGrid
-        columns={{ base: 1, sm: 2, md: 2 }}
-        spacing={6}
-        width={'full'}
-      >
-        <FormControl>
-          <FormLabel htmlFor="title">Title</FormLabel>
-          <Input
-            onChange={(e) => handleOnChange(e)}
-            value={formData?.title}
-            id="title"
+      <form ref={formRef}>
+        <SimpleGrid
+          columns={{ base: 1, sm: 2, md: 2 }}
+          spacing={6}
+          width={'full'}
+        >
+          <FormControl>
+            <FormLabel htmlFor="title">Title</FormLabel>
+            <Input
+              onChange={(e) => handleOnChange(e)}
+              value={formData?.title}
+              id="title"
+            />
+            <FormHelperText>Insert Skill Matrix section title</FormHelperText>
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="description">Description</FormLabel>
+            <Textarea
+              width={'full'}
+              onChange={(e) => handleOnChangeTextArea(e)}
+              value={formData?.description || ''}
+              id="description"
+            />
+            <FormHelperText>Insert Skill Matrix description</FormHelperText>
+          </FormControl>
+        </SimpleGrid>
+        <Divider />
+        {formData?.skillsMatrixList?.map((item) => (
+          <SkillMatrixItem
+            updateCategory={updateCategory}
+            removeCategory={removeCategory}
+            item={item}
           />
-          <FormHelperText>Insert Skill Matrix section title</FormHelperText>
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="description">Description</FormLabel>
-          <Textarea
-            width={'full'}
-            onChange={(e) => handleOnChangeTextArea(e)}
-            value={formData?.description}
-            id="description"
-          />
-          <FormHelperText>Insert Skill Matrix description</FormHelperText>
-        </FormControl>
-      </SimpleGrid>
-      <Divider />
-      {formData?.skillsMatrixList?.map((item) => (
-        <SkillMatrixItem
-          updateCategory={updateCategory}
-          removeCategory={removeCategory}
-          item={item}
-        />
-      ))}
-      <Button onClick={addNewCategory}>Add category</Button>
+        ))}
+        <Button onClick={addNewCategory}>Add category</Button>
+      </form>
     </VStack>
   );
 }

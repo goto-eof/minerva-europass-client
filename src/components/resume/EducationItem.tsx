@@ -132,7 +132,7 @@ export default function EducationItem({
           <FormLabel htmlFor="description">Description</FormLabel>
           <Textarea
             onChange={handleOnChangeTextArea}
-            value={item.description}
+            value={item.description || ''}
             id="description"
           />
           <FormHelperText>project description</FormHelperText>
