@@ -68,35 +68,13 @@ export default function Other() {
   return (
     <VStack textAlign={'left'}>
       <Heading>Other</Heading>
-      {/* <SimpleGrid
-        columns={{ base: 1, sm: 2, md: 2 }}
-        spacing={6}
-        width={'full'}
-      >
-        <FormControl>
-          <FormLabel htmlFor="title">Title</FormLabel>
-          <Input
-            onChange={(e) => handleOnChange(e)}
-            value={formData?.title}
-            id="title"
-          />
-          <FormHelperText>Insert education section title</FormHelperText>
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="description">Description</FormLabel>
-          <Textarea
-            width={'full'}
-            onChange={(e) => handleOnChangeTextArea(e)}
-            value={formData?.description}
-            id="description"
-          />
-          <FormHelperText>Insert education description</FormHelperText>
-        </FormControl>
-      </SimpleGrid> */}
+
       <Divider />
       <GenericMap
         key={'others'}
         title="Other"
+        keyTitle="Category"
+        valueTitle="Content"
         addButtonTitle={'Add other skill'}
         addItem={addItem}
         removeItem={removeItem}

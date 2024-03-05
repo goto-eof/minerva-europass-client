@@ -250,6 +250,8 @@ export default function Profile() {
         addItem={addNationality}
       />
       <GenericMap
+        keyTitle="E-mail type"
+        valueTitle="E-mail"
         key={'e-mails'}
         title="E-Mails"
         addButtonTitle={'Add E-Mail'}
@@ -258,6 +260,8 @@ export default function Profile() {
         map={formData?.emailMap}
       />
       <GenericMap
+        keyTitle="Phone type"
+        valueTitle="Phone number"
         key={'phone-numbers'}
         title="Phone numbers"
         addButtonTitle={'Add Phone number'}
@@ -267,6 +271,8 @@ export default function Profile() {
       />
 
       <GenericMap
+        keyTitle="URL type"
+        valueTitle="URL"
         key={'urls'}
         title="URLs"
         addButtonTitle={'Add URL'}

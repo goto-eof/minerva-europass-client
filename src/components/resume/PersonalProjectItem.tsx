@@ -303,6 +303,8 @@ export default function PersonalProjectItem({
           list={experience.toolList}
         />
         <GenericMap
+          keyTitle="Name"
+          valueTitle="URL"
           key={'url-list'}
           title="URLs"
           addButtonTitle={'Add URL'}
