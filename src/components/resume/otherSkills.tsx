@@ -84,7 +84,7 @@ export default function OtherSkills() {
   return (
     <VStack textAlign={'left'}>
       <Heading>Other Skills</Heading>
-      <form ref={formRef}>
+      <form ref={formRef} style={{ width: '100%' }}>
         <Divider />
         <GenericList
           readOnly={false}

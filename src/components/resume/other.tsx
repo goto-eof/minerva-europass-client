@@ -74,7 +74,7 @@ export default function Other() {
       <Heading>Other</Heading>
 
       <Divider />
-      <form ref={formRef}>
+      <form ref={formRef} style={{ width: '100%' }}>
         <GenericMap
           key={'others'}
           title="Other"

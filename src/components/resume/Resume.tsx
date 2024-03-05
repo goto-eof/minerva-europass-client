@@ -141,10 +141,17 @@ export default function Resume() {
   const [isLargerThan800] = useMediaQuery('(min-width: 900px)');
   if (isLargerThan800) {
     return (
-      <LargeScreen clearAllData={clearAllData} generatePDF={generatePDF} />
+      <Flex justifyContent={'center'} p={10}>
+        <LargeScreen clearAllData={clearAllData} generatePDF={generatePDF} />
+      </Flex>
     );
   }
-  return <SmallScreen clearAllData={clearAllData} generatePDF={generatePDF} />;
+  return (
+    <Flex justifyContent={'center'} p={5}>
+      {' '}
+      <SmallScreen clearAllData={clearAllData} generatePDF={generatePDF} />
+    </Flex>
+  );
 }
 
 function LargeScreen({
@@ -221,7 +228,7 @@ function SmallScreen({
   clearAllData: () => void;
 }) {
   return (
-    <Box>
+    <Box w={'full'}>
       <Accordion allowToggle>
         <AccordionElement title={'Profile'} child={<Profile />} />
         <AccordionElement title={'Introduction'} child={<Introduction />} />
