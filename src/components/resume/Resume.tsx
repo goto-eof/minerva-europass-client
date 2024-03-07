@@ -6,7 +6,6 @@ import {
   AccordionPanel,
   Box,
   Button,
-  Container,
   Divider,
   Flex,
   SimpleGrid,
@@ -15,7 +14,6 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  css,
   useMediaQuery,
 } from '@chakra-ui/react';
 import Profile from './Profile';
@@ -80,6 +78,11 @@ export default function Resume() {
     saveByteArray('Resume.pdf', byte);
   };
 
+  const saveDataOnLocal = () => {
+    const stringify = JSON.stringify(profileData);
+    localStorage.setItem('data', stringify);
+  };
+
   const clearAllData = () => {
     localStorage.removeItem('data');
     dispatch(resetProfile());
@@ -142,14 +145,22 @@ export default function Resume() {
   if (isLargerThan800) {
     return (
       <Flex justifyContent={'center'} p={10}>
-        <LargeScreen clearAllData={clearAllData} generatePDF={generatePDF} />
+        <LargeScreen
+          saveDataOnLocal={saveDataOnLocal}
+          clearAllData={clearAllData}
+          generatePDF={generatePDF}
+        />
       </Flex>
     );
   }
   return (
     <Flex justifyContent={'center'} p={5}>
       {' '}
-      <SmallScreen clearAllData={clearAllData} generatePDF={generatePDF} />
+      <SmallScreen
+        saveDataOnLocal={saveDataOnLocal}
+        clearAllData={clearAllData}
+        generatePDF={generatePDF}
+      />
     </Flex>
   );
 }
@@ -157,9 +168,11 @@ export default function Resume() {
 function LargeScreen({
   generatePDF,
   clearAllData,
+  saveDataOnLocal,
 }: {
   generatePDF: () => void;
   clearAllData: () => void;
+  saveDataOnLocal: () => void;
 }) {
   return (
     <Box w={'full'}>
@@ -208,9 +221,12 @@ function LargeScreen({
       </Tabs>
 
       <Divider />
-      <SimpleGrid spacing={3} columns={{ base: 1, md: 2 }}>
+      <SimpleGrid spacing={3} columns={{ base: 1, md: 3 }}>
         <Button colorScheme="red" onClick={clearAllData}>
           Clear all data
+        </Button>
+        <Button colorScheme="green" onClick={saveDataOnLocal}>
+          Save on local storage
         </Button>
         <Button colorScheme="blue" onClick={generatePDF}>
           Save & Generate PDF
@@ -223,9 +239,11 @@ function LargeScreen({
 function SmallScreen({
   generatePDF,
   clearAllData,
+  saveDataOnLocal,
 }: {
   generatePDF: () => void;
   clearAllData: () => void;
+  saveDataOnLocal: () => void;
 }) {
   return (
     <Box w={'full'}>
@@ -244,9 +262,12 @@ function SmallScreen({
         <AccordionElement title={'Certificates'} child={<Certificate />} />
       </Accordion>
       <Divider />
-      <SimpleGrid spacing={3} columns={{ base: 1, md: 2 }}>
+      <SimpleGrid spacing={3} columns={{ base: 1, md: 3 }}>
         <Button colorScheme="red" onClick={clearAllData}>
           Clear all data
+        </Button>
+        <Button colorScheme="green" onClick={saveDataOnLocal}>
+          Save on local storage
         </Button>
         <Button colorScheme="blue" onClick={generatePDF}>
           Save & Generate PDF
