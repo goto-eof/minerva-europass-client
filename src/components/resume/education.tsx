@@ -107,7 +107,7 @@ export default function Education() {
           </FormControl>
         </SimpleGrid>
         <Divider />
-        <SimpleGrid columns={{ base: 1, md: 2 }}>
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
           {formData?.educationList &&
             formData.educationList.map((item, idx) => (
               <EducationItem

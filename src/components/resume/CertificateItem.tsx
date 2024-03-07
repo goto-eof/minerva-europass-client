@@ -14,6 +14,7 @@ import {
   Text,
   Textarea,
   VStack,
+  useToast,
 } from '@chakra-ui/react';
 import ExperienceItemDTO from '../../dto/resume/ExperienceItemDTO';
 import DateUtil from '../../util/DateUtil';
@@ -23,6 +24,7 @@ import { FaEdit, FaRemoveFormat } from 'react-icons/fa';
 import GenericMap from './GenericMap';
 import KeyValueDTO from '../../dto/resume/KeyValueDTO';
 import CertificateItemDTO from '../../dto/resume/CertificateItemDTO';
+import ToastUtil from '../util/ToastUtil';
 
 type AdditionalFields = { readOnly?: boolean; isAlreadyExists?: boolean };
 
@@ -71,10 +73,6 @@ export default function CertificateItem({
     setExperience({ ...experience, [e.target.id]: e.target.value });
   };
 
-  const handleCheckBox = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setExperience({ ...experience, [e.target.id]: e.target.checked });
-  };
-
   const handleOnChangeTextArea = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -97,14 +95,6 @@ export default function CertificateItem({
     removeFromList(tech, 'frontEndTechnologyList');
   };
 
-  const addTool = (tech: string) => {
-    addToList(tech, 'toolList');
-  };
-
-  const removeTool = (tech: string) => {
-    removeFromList(tech, 'toolList');
-  };
-
   const addNewExperience = () => {
     if (add) {
       add(experience);
@@ -117,34 +107,6 @@ export default function CertificateItem({
       update(experience);
     }
     setExperience({ ...experience, readOnly: true });
-  };
-
-  const addToMap = (keyValue: KeyValueDTO, fieldName: string) => {
-    let itemsMap: Array<KeyValueDTO> = new Array<KeyValueDTO>();
-    if (experience && fieldName in experience) {
-      console.log(experience);
-      itemsMap = (experience as any)[fieldName];
-    }
-    console.log(itemsMap);
-    const newMap: Array<KeyValueDTO> = [...itemsMap];
-    newMap.push(keyValue);
-    setExperience({
-      ...experience,
-      [fieldName]: newMap,
-    });
-  };
-
-  const removeFromMap = (keyValue: KeyValueDTO, fieldName: string) => {
-    let itemsMap = new Array<KeyValueDTO>();
-    if (experience && fieldName in experience) {
-      itemsMap = (experience as any)[fieldName].filter(
-        (item: KeyValueDTO) => item.key !== keyValue.key
-      );
-    }
-    setExperience({
-      ...experience,
-      [fieldName]: itemsMap,
-    });
   };
 
   const removeFromList = (value: string, fieldName: string) => {
@@ -161,8 +123,21 @@ export default function CertificateItem({
       [fieldName]: values,
     });
   };
+  const toast = useToast();
 
   const addToList = (value: string, fieldName: string) => {
+    if (
+      experience &&
+      (experience as any)[fieldName] &&
+      ((experience as any)[fieldName] as Array<string>).indexOf(value) > -1
+    ) {
+      ToastUtil.showWarning(
+        toast,
+        'Duplicate found',
+        'Item "' + value + '" already exists'
+      );
+      return;
+    }
     let values = [value];
     if (experience && fieldName in experience) {
       const list: Array<string> = (experience as any)[fieldName];
@@ -185,14 +160,6 @@ export default function CertificateItem({
       />
     );
   }
-
-  const addUrl = (kv: KeyValueDTO) => {
-    addToMap(kv, 'urlList');
-  };
-
-  const removeUrl = (kv: KeyValueDTO) => {
-    removeFromMap(kv, 'urlList');
-  };
 
   return (
     <Card width={'full'}>

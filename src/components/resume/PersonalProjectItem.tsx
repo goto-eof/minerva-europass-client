@@ -14,6 +14,7 @@ import {
   Text,
   Textarea,
   VStack,
+  useToast,
 } from '@chakra-ui/react';
 import ExperienceItemDTO from '../../dto/resume/ExperienceItemDTO';
 import DateUtil from '../../util/DateUtil';
@@ -22,6 +23,7 @@ import { useEffect, useState } from 'react';
 import { FaEdit, FaRemoveFormat } from 'react-icons/fa';
 import GenericMap from './GenericMap';
 import KeyValueDTO from '../../dto/resume/KeyValueDTO';
+import ToastUtil from '../util/ToastUtil';
 
 type AdditionalFields = { readOnly?: boolean; isAlreadyExists?: boolean };
 
@@ -123,6 +125,20 @@ export default function PersonalProjectItem({
   };
 
   const addToMap = (keyValue: KeyValueDTO, fieldName: string) => {
+    if (
+      experience &&
+      (experience as any)[fieldName] &&
+      !!((experience as any)[fieldName] as Array<KeyValueDTO>).find(
+        (item) => item.key === keyValue.key
+      )
+    ) {
+      ToastUtil.showWarning(
+        toast,
+        'Duplicate found',
+        'Item "' + keyValue.key + '" already exists'
+      );
+      return;
+    }
     let itemsMap: Array<KeyValueDTO> = new Array<KeyValueDTO>();
     if (experience && fieldName in experience) {
       console.log(experience);
@@ -165,7 +181,21 @@ export default function PersonalProjectItem({
     });
   };
 
+  const toast = useToast();
+
   const addToList = (value: string, fieldName: string) => {
+    if (
+      experience &&
+      (experience as any)[fieldName] &&
+      ((experience as any)[fieldName] as Array<string>).indexOf(value) > -1
+    ) {
+      ToastUtil.showWarning(
+        toast,
+        'Duplicate found',
+        'Item "' + value + '" already exists'
+      );
+      return;
+    }
     let values = [value];
     if (experience && fieldName in experience) {
       const list: Array<string> = (experience as any)[fieldName];

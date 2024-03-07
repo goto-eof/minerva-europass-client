@@ -117,7 +117,7 @@ export default function PersonalProjects() {
           </FormControl>
         </SimpleGrid>
         <Divider />
-        <SimpleGrid columns={{ base: 1, md: 2 }}>
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
           {formData?.experienceList &&
             formData.experienceList.map((item) => (
               <PersonalProjectItem

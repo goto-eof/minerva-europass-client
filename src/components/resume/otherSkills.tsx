@@ -8,12 +8,14 @@ import {
   SimpleGrid,
   Textarea,
   VStack,
+  useToast,
 } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
 import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
 import OtherSkillsDTO from '../../dto/resume/OtherSkillsDTO';
 import { replaceOtherSkills } from '../store/odtheSkills-slice';
 import GenericList from './GenericList';
+import ToastUtil from '../util/ToastUtil';
 
 export default function OtherSkills() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -43,8 +45,20 @@ export default function OtherSkills() {
     });
     dispatch(replaceOtherSkills({ ...formData, [fieldName]: values }));
   };
-
+  const toast = useToast();
   const addToList = (value: string, fieldName: string) => {
+    if (
+      formData &&
+      (formData as any)[fieldName] &&
+      ((formData as any)[fieldName] as Array<string>).indexOf(value) > -1
+    ) {
+      ToastUtil.showWarning(
+        toast,
+        'Duplicate found',
+        'Item "' + value + '" already exists'
+      );
+      return;
+    }
     let values = [value];
     if (formData && fieldName in formData) {
       const list: Array<string> = (formData as any)[fieldName];

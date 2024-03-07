@@ -6,6 +6,7 @@ import {
   Input,
   SimpleGrid,
   VStack,
+  useToast,
 } from '@chakra-ui/react';
 import { replaceProfile } from '../store/profile-slice';
 import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
@@ -14,6 +15,7 @@ import { useEffect, useRef, useState } from 'react';
 import GenericList from './GenericList';
 import GenericMap from './GenericMap';
 import KeyValueDTO from '../../dto/resume/KeyValueDTO';
+import ToastUtil from '../util/ToastUtil';
 
 export default function Profile() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -53,7 +55,21 @@ export default function Profile() {
     addToList(value, 'citizenshipList');
   };
 
+  const toast = useToast();
+
   const addToList = (value: string, fieldName: string) => {
+    if (
+      formData &&
+      (formData as any)[fieldName] &&
+      ((formData as any)[fieldName] as Array<string>).indexOf(value) > -1
+    ) {
+      ToastUtil.showWarning(
+        toast,
+        'Duplicate found',
+        'Item "' + value + '" already exists'
+      );
+      return;
+    }
     let values = [value];
     if (formData && fieldName in formData) {
       const list: Array<string> = (formData as any)[fieldName];
@@ -79,6 +95,20 @@ export default function Profile() {
   };
 
   const addToMap = (keyValue: KeyValueDTO, fieldName: string) => {
+    if (
+      formData &&
+      (formData as any)[fieldName] &&
+      !!((formData as any)[fieldName] as Array<KeyValueDTO>).find(
+        (item) => item.key === keyValue.key
+      )
+    ) {
+      ToastUtil.showWarning(
+        toast,
+        'Duplicate found',
+        'Item "' + keyValue.key + '" already exists'
+      );
+      return;
+    }
     let itemsMap: Array<KeyValueDTO> = new Array<KeyValueDTO>();
     if (formData && fieldName in formData) {
       console.log(formData);

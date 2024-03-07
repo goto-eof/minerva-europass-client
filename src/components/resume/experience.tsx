@@ -65,14 +65,6 @@ export default function Experience() {
     dispatch(replaceExperience(newExperience));
   };
 
-  const equals = (exp1: ExperienceItemDTO, exp2: ExperienceItemDTO) => {
-    return (
-      exp1.dateFrom === exp2.dateFrom &&
-      exp1.dateTo === exp2.dateTo &&
-      exp1.description === exp2.description
-    );
-  };
-
   const updateExperience = (experience: ExperienceItemDTO) => {
     const newExperience = {
       ...formData,
@@ -117,7 +109,7 @@ export default function Experience() {
           </FormControl>
         </SimpleGrid>
         <Divider />
-        <SimpleGrid columns={{ base: 1, md: 2 }}>
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
           {formData?.experienceList &&
             formData.experienceList.map((item) => (
               <ExperienceItem

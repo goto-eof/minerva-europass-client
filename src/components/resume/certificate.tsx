@@ -114,7 +114,7 @@ export default function Certificate() {
           </FormControl>
         </SimpleGrid>
         <Divider />
-        <SimpleGrid w={'full'} columns={{ base: 1, md: 2 }}>
+        <SimpleGrid w={'full'} columns={{ base: 1, md: 2 }} spacing={6}>
           {formData?.certificateList &&
             formData.certificateList.map((item) => (
               <CertificateItem

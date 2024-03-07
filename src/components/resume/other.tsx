@@ -8,6 +8,7 @@ import {
   SimpleGrid,
   Textarea,
   VStack,
+  useToast,
 } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
 import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
@@ -15,6 +16,7 @@ import OtherDTO from '../../dto/resume/OtherDTO';
 import { replaceOther } from '../store/other-slice';
 import KeyValueDTO from '../../dto/resume/KeyValueDTO';
 import GenericMap from './GenericMap';
+import ToastUtil from '../util/ToastUtil';
 
 export default function Other() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -31,7 +33,23 @@ export default function Other() {
     }
   }, [data]);
 
+  const toast = useToast();
+
   const addToMap = (keyValue: KeyValueDTO, fieldName: string) => {
+    if (
+      formData &&
+      (formData as any)[fieldName] &&
+      !!((formData as any)[fieldName] as Array<KeyValueDTO>).find(
+        (item) => item.key === keyValue.key
+      )
+    ) {
+      ToastUtil.showWarning(
+        toast,
+        'Duplicate found',
+        'Item "' + keyValue.key + '" already exists'
+      );
+      return;
+    }
     let itemsMap: Array<KeyValueDTO> = new Array<KeyValueDTO>();
     if (formData && fieldName in formData) {
       console.log(formData);

@@ -14,12 +14,14 @@ import {
   Text,
   Textarea,
   VStack,
+  useToast,
 } from '@chakra-ui/react';
 import ExperienceItemDTO from '../../dto/resume/ExperienceItemDTO';
 import DateUtil from '../../util/DateUtil';
 import GenericList from './GenericList';
 import { useEffect, useState } from 'react';
 import { FaEdit, FaRemoveFormat } from 'react-icons/fa';
+import ToastUtil from '../util/ToastUtil';
 
 type AdditionalFields = { readOnly?: boolean; isAlreadyExists?: boolean };
 
@@ -136,7 +138,21 @@ export default function ExperienceItem({
     });
   };
 
+  const toast = useToast();
+
   const addToList = (value: string, fieldName: string) => {
+    if (
+      experience &&
+      (experience as any)[fieldName] &&
+      ((experience as any)[fieldName] as Array<string>).indexOf(value) > -1
+    ) {
+      ToastUtil.showWarning(
+        toast,
+        'Duplicate found',
+        'Item "' + value + '" already exists'
+      );
+      return;
+    }
     let values = [value];
     if (experience && fieldName in experience) {
       const list: Array<string> = (experience as any)[fieldName];
@@ -147,6 +163,7 @@ export default function ExperienceItem({
       [fieldName]: values,
     });
   };
+
   const toggleReadOnly = () => {
     setExperience({ ...experience, readOnly: !experience.readOnly });
   };
