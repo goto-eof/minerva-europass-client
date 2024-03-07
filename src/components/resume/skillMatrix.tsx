@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Card,
   CardBody,
@@ -12,7 +13,6 @@ import {
   Input,
   SimpleGrid,
   Textarea,
-  VStack,
   useToast,
 } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
@@ -97,8 +97,8 @@ export default function SkillMatrix() {
   };
 
   return (
-    <VStack textAlign={'left'}>
-      <Heading>Skills Matrix</Heading>
+    <Box w={'full'}>
+      <Heading textAlign={'center'}>Skills Matrix</Heading>
       <form ref={formRef}>
         <SimpleGrid
           columns={{ base: 1, sm: 2, md: 2 }}
@@ -136,7 +136,7 @@ export default function SkillMatrix() {
         ))}
         <SkillMatrixItem addCategory={addCategory} />
       </form>
-    </VStack>
+    </Box>
   );
 }
 const defaultItem = {
