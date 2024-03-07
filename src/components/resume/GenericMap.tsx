@@ -6,9 +6,11 @@ import {
   Heading,
   Input,
   SimpleGrid,
+  useToast,
 } from '@chakra-ui/react';
 import { ChangeEvent, useState } from 'react';
 import KeyValueDTO from '../../dto/resume/KeyValueDTO';
+import ToastUtil from '../util/ToastUtil';
 
 const defaultKeyValue: KeyValueDTO = { key: '', value: '' };
 
@@ -35,7 +37,13 @@ export default function GenericMap({
     setKeyValue({ ...keyValue, [e.target.id]: e.target.value });
   };
 
+  const toast = useToast();
+
   const updateItems = () => {
+    if (!keyValue.key) {
+      ToastUtil.showWarning(toast, 'Empty value', '');
+      return;
+    }
     addItem(keyValue);
     setKeyValue(defaultKeyValue);
   };

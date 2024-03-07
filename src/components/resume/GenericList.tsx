@@ -6,8 +6,10 @@ import {
   InputGroup,
   InputRightElement,
   SimpleGrid,
+  useToast,
 } from '@chakra-ui/react';
-import { ChangeEvent, FC, ReactNode, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
+import ToastUtil from '../util/ToastUtil';
 
 type ReadOnlyGenericList = {
   readOnly: boolean;
@@ -27,6 +29,7 @@ type GenericListType = ReadOnlyGenericList | WriteOnlyGenericList;
 
 export default function GenericList(props: GenericListType) {
   const [value, setValue] = useState<string>('');
+  const toast = useToast();
 
   const updateItem = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -41,6 +44,10 @@ export default function GenericList(props: GenericListType) {
   }
 
   const updateItems = (nationality: string) => {
+    if (!value) {
+      ToastUtil.showWarning(toast, 'Empty value', '');
+      return;
+    }
     if ((props as any).addItem) {
       (props as WriteOnlyGenericList).addItem(nationality);
     }

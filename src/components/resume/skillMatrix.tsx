@@ -13,6 +13,7 @@ import {
   SimpleGrid,
   Textarea,
   VStack,
+  useToast,
 } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
 import { useGlobalDispatch, useGlobalSelector } from '../store/hook';
@@ -21,6 +22,7 @@ import { replaceSkillMatrix } from '../store/skillMatrix-slice';
 import SkillMatrixItemDTO from '../../dto/resume/SkillMatrixItemDTO';
 import GenericList from './GenericList';
 import { FaRemoveFormat } from 'react-icons/fa';
+import ToastUtil from '../util/ToastUtil';
 
 export default function SkillMatrix() {
   const data = useGlobalSelector((state) => {
@@ -51,26 +53,6 @@ export default function SkillMatrix() {
     );
   };
 
-  const addNewCategory = () => {
-    let list: SkillMatrixItemDTO[] = [];
-    if (formData && formData.skillsMatrixList) {
-      list = formData.skillsMatrixList;
-    }
-    const newFormData = {
-      ...formData,
-      skillsMatrixList: [
-        ...list,
-        {
-          _id: list.length,
-          name: '',
-          values: [],
-        },
-      ],
-    };
-    setFormData(newFormData);
-    dispatch(replaceSkillMatrix(newFormData));
-  };
-
   const removeCategory = (_id: number) => {
     let list: SkillMatrixItemDTO[] = [];
     if (formData && formData.skillsMatrixList) {
@@ -94,6 +76,21 @@ export default function SkillMatrix() {
       skillsMatrixList: list.map((item) =>
         item._id !== category._id ? item : category
       ),
+    };
+    setFormData(newFormData);
+    dispatch(replaceSkillMatrix(newFormData));
+  };
+
+  const addCategory = (category: SkillMatrixItemDTO) => {
+    const arr = formData?.skillsMatrixList || [];
+    console.log(category);
+
+    const newFormData = {
+      ...formData,
+      skillsMatrixList: [
+        ...arr,
+        { ...category, _id: formData?.skillsMatrixList?.length },
+      ],
     };
     setFormData(newFormData);
     dispatch(replaceSkillMatrix(newFormData));
@@ -131,43 +128,64 @@ export default function SkillMatrix() {
         <Divider />
         {formData?.skillsMatrixList?.map((item) => (
           <SkillMatrixItem
+            key={item._id}
             updateCategory={updateCategory}
             removeCategory={removeCategory}
             item={item}
           />
         ))}
-        <Button onClick={addNewCategory}>Add category</Button>
+        <SkillMatrixItem addCategory={addCategory} />
       </form>
     </VStack>
   );
 }
-
+const defaultItem = {
+  name: '',
+  values: [],
+};
 function SkillMatrixItem({
   item,
   removeCategory,
   updateCategory,
+  addCategory,
 }: {
-  item: SkillMatrixItemDTO;
-  removeCategory: (idx: number) => void;
-  updateCategory: (category: SkillMatrixItemDTO) => void;
+  item?: SkillMatrixItemDTO;
+  removeCategory?: (idx: number) => void;
+  updateCategory?: (category: SkillMatrixItemDTO) => void;
+  addCategory?: (category: SkillMatrixItemDTO) => void;
 }) {
-  const [editableItem, setEditableItem] = useState<SkillMatrixItemDTO>({
-    ...item,
-  });
+  const [isNewItem, setIsNewItem] = useState<boolean>(!item);
+  const [editableItem, setEditableItem] = useState<SkillMatrixItemDTO>(
+    item
+      ? {
+          ...item,
+        }
+      : defaultItem
+  );
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newObj = { ...editableItem, [e.target.id]: e.target.value };
     setEditableItem(newObj);
-    updateCategory(newObj);
+    if (updateCategory) {
+      updateCategory(newObj);
+    }
   };
 
+  const toast = useToast();
+
   const addItem = (value: string) => {
+    if (editableItem.values.indexOf(value) > -1) {
+      ToastUtil.showWarning(toast, 'Duplicate value', 'Item already exists');
+      return;
+    }
     const newObj = {
       ...editableItem,
       values: [...editableItem.values, value],
     };
     setEditableItem(newObj);
-    updateCategory(newObj);
+    if (updateCategory) {
+      updateCategory(newObj);
+    }
   };
   const removeItem = (value: string) => {
     const newObj = {
@@ -175,11 +193,22 @@ function SkillMatrixItem({
       values: editableItem.values.filter((it) => it !== value),
     };
     setEditableItem(newObj);
-    updateCategory(newObj);
+    if (updateCategory) {
+      updateCategory(newObj);
+    }
   };
 
   const removeCategoryItem = () => {
-    removeCategory(item._id!);
+    if (removeCategory && item) {
+      removeCategory(item._id!);
+    }
+  };
+
+  const addNewCategory = () => {
+    if (isNewItem && addCategory) {
+      addCategory(editableItem);
+      setEditableItem(defaultItem);
+    }
   };
 
   return (
@@ -210,6 +239,7 @@ function SkillMatrixItem({
           list={editableItem.values}
         />
       </CardBody>
+      {isNewItem && <Button onClick={addNewCategory}>Add Skills</Button>}
     </Card>
   );
 }
