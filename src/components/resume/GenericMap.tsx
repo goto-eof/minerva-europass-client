@@ -41,7 +41,7 @@ export default function GenericMap({
 
   const updateItems = () => {
     if (!keyValue.key) {
-      ToastUtil.showWarning(toast, 'Empty value', '');
+      ToastUtil.showWarning(toast, 'Empty value', 'Invalid value');
       return;
     }
     addItem(keyValue);
