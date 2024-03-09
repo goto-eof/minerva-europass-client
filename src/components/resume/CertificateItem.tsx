@@ -1,9 +1,7 @@
 import {
-  Box,
   Button,
   Card,
   CardBody,
-  Checkbox,
   Flex,
   FormControl,
   FormHelperText,
@@ -13,18 +11,14 @@ import {
   SimpleGrid,
   Text,
   Textarea,
-  VStack,
   useToast,
 } from '@chakra-ui/react';
-import ExperienceItemDTO from '../../dto/resume/ExperienceItemDTO';
-import DateUtil from '../../util/DateUtil';
 import GenericList from './GenericList';
 import { useEffect, useState } from 'react';
 import { FaEdit, FaRemoveFormat } from 'react-icons/fa';
-import GenericMap from './GenericMap';
-import KeyValueDTO from '../../dto/resume/KeyValueDTO';
 import CertificateItemDTO from '../../dto/resume/CertificateItemDTO';
 import ToastUtil from '../util/ToastUtil';
+import DateUtil from '../../util/DateUtil';
 
 type AdditionalFields = { readOnly?: boolean; isAlreadyExists?: boolean };
 
