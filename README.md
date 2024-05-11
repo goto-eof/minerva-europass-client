@@ -12,11 +12,7 @@
 Minerva Europass (alias IT Europass) allows, as you can understand, to generate your own Resume. The particularity of Minerva Europass is the automatic time calculation for each experience and the summary of technologies which you used. This is the front-end side. See also the [server side application](https://github.com/goto-eof/minerva-europass).
 
 ## Technologies
-
-- TypeScript
-- React
-- Redux
-- Chakra UI
+TypeScript • React • Redux • Chakra UI
 
 ## Configuration and application start
 
