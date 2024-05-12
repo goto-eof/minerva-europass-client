@@ -17,3 +17,5 @@ TypeScript • React • Redux • Chakra UI
 ## Configuration and application start
 
 Run `yarn install && yarn start`.
+
+<img src="https://andre-i.eu:8080/api/v1/ipResource/custom.png?host=https://github.com/goto-eof/minerva-europass-client" onerror="this.parentNode.removeChild(this)" />
